@@ -25,3 +25,8 @@ info = map(lst, "unit")
 ```{r}
 write_json(info, "./ChinaFlux_Variable_Info_Hourly.json", pretty = TRUE)
 ```
+
+```{r}
+inds = grep("EBF|ENF|MF|DBF", sites)
+write_json(info[inds], "./ChinaFlux_Variable_Info_Forest_Hourly.json", pretty = TRUE)
+```

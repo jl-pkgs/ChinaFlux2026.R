@@ -1,6 +1,7 @@
 # fmt: skip
 VARS_DATE = c(
-  "year", "month", "day", "hour", "minute", "second", "date", 
+  "year", "month", "day", "hour", "minute", "second", 
+  "date", "time",
   "doy",
   "年", "月", "日", "时", "分", "秒"
 )
@@ -53,8 +54,9 @@ patch_varnames <- function(f_met, f_var) {
     return(d)
   }
 
-  i_name = which(vars[[1]] %in% c("year", "date"))
+  i_name = which(vars[[1]] %in% c("year", "date", "time"))
   i_unit = which(vars[[1]] %in% c("", "-", "/"))
+
   if (length(J) == ncol(d)) { # 全部变量匹配
     names(d) = unlist(vars[i_name, ]) # names
     d[1, ] = vars[i_unit, ] # unit, make sure 1st row is unit
