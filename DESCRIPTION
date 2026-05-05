@@ -10,7 +10,7 @@ Depends:
 Imports: 
     magrittr, 
     lubridate,
-    dplyr, purrr, 
+    dplyr, purrr, terra, 
     data.table, 
     methods
 Suggests: 
