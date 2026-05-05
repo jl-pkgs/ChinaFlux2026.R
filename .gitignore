@@ -11,3 +11,6 @@ TEMP
 
 *.html
 backup
+
+*.rds
+*.rda
