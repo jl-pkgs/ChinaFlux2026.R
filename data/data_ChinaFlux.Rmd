@@ -1,0 +1,10 @@
+```{r}
+pacman::p_load(
+  Ipaper, data.table, dplyr, lubridate
+)
+```
+
+```{r}
+st = st_flux341[source == "nesdc"]
+fwrite(st, "data/Flux/st_chinaflux42.csv", bom = TRUE)
+```

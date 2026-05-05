@@ -1,0 +1,38 @@
+```{r}
+pacman::p_load(
+  Ipaper, data.table, dplyr, lubridate
+)
+devtools::load_all()
+```
+
+## 站点数据提取
+
+```{r}
+st <- fread("data/Flux/st_flux341.csv") ## 这里处理了所有站点的
+sp <- sf2::df2sf(st)[, 1]
+
+process_LAI(sp, subfix = "st341", outdir = "./data")
+# df_lai[site == "FI-Hyy"] %>% tail()
+```
+
+## 8day to 1day
+
+```{r}
+df_lai <- fread("data-raw/LAI/LAI_ALL_8D_2000-2024_st341.csv")
+sites <- unique_sort(df_lai$site) %>% set_names(., .)
+```
+
+```{r}
+# SITE <- "FI-Hyy"
+period <- c(2000, 2024)
+dates_daily <- seq(make_date(period[1]), make_date(period[2], 12, 31), by = "day")
+
+res <- llply(sites, \(SITE) {
+  d_lai <- df_lai[site == SITE]
+  r <- d_lai[, lapply(.SD, \(x) approx_LAI(date, x, dates_daily)),
+    .SDcols = c("LAI_glass_G005", "LAI_glass", "LAI_whit")
+  ] %>% cbind(date = dates_daily, .)
+}, .progress = "text")
+saveRDS(res, "data-raw/LAI/ALL_LAI_GLASS&WHIT_1D_2000-2024_st341.rds")
+# [HMo]: need at least two non-NA values to interpolate
+```

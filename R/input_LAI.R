@@ -40,6 +40,7 @@ approx_LAI <- function(t, y, tout) {
   inds <- which.notna(y)
   t <- t[inds]
   y <- y[inds]
+  if (length(t) <= 3) return(rep(NA_real_, length(tout)))
 
   # rule=2, if x out range, use nearest
   yout = approx(t, y, xout = tout, rule = 2)$y
