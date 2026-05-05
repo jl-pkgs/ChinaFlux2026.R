@@ -1,3 +1,9 @@
+graphify-out
 images
 *.json
 *.xlsx
+# *.pdf
+
+# *.txt
+# *.csv
+TEMP
