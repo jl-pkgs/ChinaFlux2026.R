@@ -1,0 +1,5 @@
+[format]
+persistent-line-breaks = true
+indent-width = 4
+skip = ["foreach", "%do%"]
+default-exclude = true
