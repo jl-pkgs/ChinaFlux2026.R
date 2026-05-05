@@ -1,0 +1,1316 @@
+{
+  "临泽": [
+    {
+      "date": "/",
+      "Hs": "W m-2",
+      "LE": "W m-2",
+      "NEE": "gC m-2 d-1",
+      "Ustar": "m s-1",
+      "Rn": "W/m^2",
+      "G": "W/m^2",
+      "PAR": "umol/(m^2 s)",
+      "Ta": "℃",
+      "RH": "%",
+      "WS": "m/s",
+      "TS_10cm": "℃",
+      "SM_10cm": "m3 m-3"
+    }
+  ],
+  "句容": [
+    {
+      "year": "-",
+      "month": "-",
+      "day": "-",
+      // "date": "/",
+      "Ta": "℃",
+      "RH": "%",
+      "VPD": "kPa",
+      "Rs": "W m-2",
+      "Rn": "W m-2",
+      "PAR": "mol m-2",
+      "WS": "m s-1",
+      "Pa": "hPa",
+      "TS": "℃", // 0.05m, 0.10m, 0.20m, 0.30m, 0.50m
+      "SM": "m3 m-3", // 0.05m, 0.10m, 0.20m, 0.30m, 0.50m
+      "G": "W m-2", // 0.05 m, 0.10 m, 0.15 m
+      "Prcp": "mm",
+      "NEE": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1"
+    }
+  ],
+  "固城": [
+    {
+      "year": "-",
+      "month": "-",
+      "day": "-",
+      "doy": "-",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃",
+      "RH": "%",
+      "ea": "kPa",
+      "PAR": "gC m-2 d-1",
+      "albedo": "/",
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2",
+      "Prcp": "mm",
+      "WS": "m s-1",
+      "WD": "°",
+      "WD_sd": "°",
+      "G_N": "W m-2",
+      "G_S": "W m-2",
+      "TS_4cm_N": "℃",
+      "TS_4cm_S": "℃",
+      "SM_4cm_N": "m3 m-3", // 4cm
+      "SM_4cm_S": "m3 m-3"
+    }
+  ],
+  "庆阳": [
+    {
+      "date": "/",
+      "NEE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "ET": "mm",
+      "Hs": "W/m2",
+      "LE": "W/m2",
+      "G": "W/m2",
+      "Rn": "W/m2",
+      "PAR": "umol/m2/s",
+      "VPD": "kPa",
+      "Ta": "℃", // 4m
+      "RH": "%", // 4m
+      "WS": "m/s", // 4m
+      "WD": "-", // 4m
+      "TS_10cm": "℃",
+      "SM_10cm": "m3 m-3",
+      "Prcp": "mm",
+      "Pa": "hPa"
+    }
+  ],
+  "栾城": [
+    {
+      "date": "/",
+      "NEE": "gC m-2 d-1",
+      "QC_NEE": "/",
+      "Hs": "W m-2",
+      "QC_Hs": "/",
+      "Rn": "W m-2",
+      "QC_Rn": "/",
+      "Prcp_M": "mm",
+      "Prcp_A": "mm",
+      "ET": "mm",
+      "QC_ET": "/",
+      "GPP": "gC m-2 d-1"
+    }
+  ],
+  "盘锦": [
+    {
+      "year": 2000,
+      "month": 1,
+      "day": 1,
+      "NEE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "K", // 2.5m
+      "RH": "%", // 2.5m
+      "WS": "m s-1", // 2.5m
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2",
+      "PAR": "umol m-2",
+      "TS_5cm": "K",
+      "TS_35cm": "K",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_30cm": "m3 m-3",
+      "SM_40cm": "m3 m-3",
+      "SM_50cm": "m3 m-3",
+      "Prcp": "mm",
+      "Gs_1": "W m-2", // 5cm
+      "Gs_2": "W m-2",
+      "Gs_3": "W m-2"
+    }
+  ],
+  "禹城": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃",
+      "Ta_canopy": "℃", // 1.5m ~3.3m, 冬小麦~夏玉米
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg",
+      "Pa": "kpa",
+      "Rs": "W m-2",
+      "Rn": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_30cm": "℃",
+      "TS_50cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "锦洲": [ // 春玉米
+    {
+      "year": "-",
+      "month": "-",
+      "day": "-",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "doy": "-",
+      "Ta": "℃", // 4m
+      "Ta_canopy": "℃", // 6m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kPa",
+      "ea_canopy": "kPa",
+      "WS": "m/s",
+      "WS_canopy": "m/s",
+      "WD_D1": "°",
+      "WD_SD1": "°",
+      "Rs": "W/m²",
+      "Rs_out": "W/m²",
+      "Rln_in": "W/m²",
+      "Rln_out": "W/m²",
+      "Rn": "W/m²", // 4.5m
+      "PAR": "gC m-2 d-1",
+      "G_1": "W/m²", // 5cm
+      "G_2": "W/m²", // 5cm
+      "TS_TCAV": "℃",
+      "SM": "m3 m-3",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_15cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_80cm": "℃",
+      "Prcp": "mm",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_30cm": "m3 m-3",
+      "SM_40cm": "m3 m-3"
+    }
+  ],
+  "长岭": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 1.2m
+      "GPP": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "ET": "mm d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃",
+      "RH": "%",
+      "ea": "kpa",
+      "VPD": "kpa",
+      "WS": "m s-1", // 2m
+      "WD": "Deg",
+      "Pa": "kpa",
+      "G": "W m-2", // 5cm
+      "Rn": "W m-2",
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "SM_0-20cm_1": "m3 m-3", // 0-20cm平均值
+      "SM_0-20cm_2": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "宝天曼_天然栎林": [ // z_canopy = 20m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 30m
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 2m
+      "Ta_canopy": "℃", // 22m
+      "RH": "%",
+      "RH_canopy": "%",
+      "WS": "m s-1", // 2m
+      "WS_canopy": "m s-1", // 22m
+      "WD": "Deg",
+      "Pa": "kpa",
+      "PAR": "μmol m-2 s-1",
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2", // 24m
+      "TS_5cm": "℃",
+      "TS_20cm": "℃",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_50cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "小浪底_栓皮栎人工林": [ // z_canopy = 11m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 5m
+      "Ta_canopy": "℃", // 26m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kPa",
+      "ea_canopy": "kPa",
+      "WS": "m s-1", // 5m
+      "WS_canopy": "m s-1", // 26m
+      "WD": "Deg",
+      "Pa": "kPa", // 36m
+      "Rs": "W m-2",
+      "Rn": "W m-2", // 17m
+      "PAR": "μmol m-2 s-1",
+      "TS_0cm": "℃",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "帽儿山": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "Rs": "W m-2", // 48m
+      "PAR": "μmol m-2 s-1",
+      "Ta": "℃", // 16m
+      "VPD": "kPa", // 16m
+      "TS_0cm": "℃",
+      "TS_5cm": "℃",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_30cm": "m3 m-3",
+      "SM_50cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "儋州-橡胶林": [ // z_canopy = 18m
+    {
+      "date": "-",
+      "year": "-",
+      "doy": "-",
+      "NEE": "gC m-2 d-1", // 25m
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2", // 25m
+      "Hs": "W m-2", // 25m
+      "ET": "mm d-1", // kg H2O m-2 d-1
+      "Ta": "℃", // 1.5m
+      "Ta_canopy": "℃", // 33m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kPa",
+      "ea_canopy": "kPa",
+      "WS": "m·s-1", // 1.5m
+      "WS_canopy": "m·s-1", // 33m
+      "WD": "degree",
+      "PAR": "umol·m-2·s-1",
+      "Rs": "W·m-2",
+      "Rn": "W·m-2", // 25m
+      "TS_2cm": "℃",
+      "TS_5cm": "℃",
+      "TS_20cm": "℃",
+      "TS_50cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_50cm": "m3 m-3",
+      "Pa": "kPa",
+      "Prcp": "mm"
+    }
+  ],
+  "哀牢山": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "ET": "mm day-1", // kg H2O m-2 day-1
+      "Ta": "℃", // 1.5m, 近地面
+      "Ta_canopy": "℃", // 34m, 冠层上方
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1", // 1.5m
+      "WS_canopy": "m s-1", // 34m
+      "WD": "deg",
+      "Pa": "hPa",
+      "Rs": "W m-2", // 28.6m
+      "Rn": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_0cm": "℃",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_15cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_60cm": "℃",
+      "TS_100cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_60cm": "m3 m-3",
+      "SM_100cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "西双版纳_橡胶林": [ // z = 21m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 38m
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "ET": "kg H2O m-2 d-1",
+      "Ta": "℃", // 2.2m
+      "Ta_canopy": "℃", // 28.9m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg",
+      "Pa": "hpa",
+      "Rs": "W m-2",
+      "Rn": "W m-2", // 28.6m
+      "PAR": "μmol m-2 s-1",
+      "TS_0cm": "℃",
+      "TS_5cm": "℃",
+      "TS_20cm": "℃",
+      "TS_100cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_100cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "西双版纳_热带雨林": [
+    {
+      "year": "-",
+      "month": "-",
+      "day": "-",
+      "NEE": "gC m-2 d-1", // 48.8
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "ET": "kg H2O m-2 d-1",
+      "Ta": "℃", // 4.2m
+      "Ta_canopy": "℃", // 42m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg",
+      "Pa": "kpa",
+      "Rs": "W m-2",
+      "Rn": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_0cm": "℃",
+      "TS_40cm": "℃",
+      "TS_60cm": "℃",
+      "TS_80cm": "℃",
+      "TS_100cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_40cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "金佛山_亚热带": [
+    {
+      "year": "-",
+      "month": "-",
+      "day": "-",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 4m
+      "RH": "%",
+      "WS": "m/s",
+      "Pa": "hPa", // 1.5m
+      "Rs": "W/m^2", // 2m
+      "Rn": "W/m^2",
+      "PAR": "μmol/m2/s",
+      "Ta_canopy": "℃", // 24m
+      "RH_canopy": "%",
+      "WS_canopy": "m/s",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_60cm": "℃",
+      "TS_80cm": "℃",
+      "TS_120cm": "℃",
+      "TS_160cm": "℃",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_40cm": "m3 m-3",
+      "SM_60cm": "m3 m-3",
+      "SM_80cm": "m3 m-3",
+      "SM_120cm": "m3 m-3",
+      "SM_160cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "千烟洲_人工针叶林": [ // z_canopy = 12m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 39.6m
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 1.6m
+      "Ta_canopy": "℃", // 39.6m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg",
+      "Pa": "kpa",
+      "Rs": "W m-2", // 41.6m
+      "Rn": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_50cm": "℃",
+      "TS_100cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_50cm": "m3 m-3",
+      "Prcp": "mm",
+      "SM_10cm": "mm"
+    }
+  ],
+  "呼中_北方森林": [ // 冠层高度15m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", //
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta_34m": "℃",
+      "Ta_25m": "℃",
+      "Ta_canopy": "℃", // 15m, canopy
+      "Ta": "℃", // 2m
+      "RH_34m": "%",
+      "RH_25m": "%",
+      "RH_canopy": "%",
+      "RH": "%", // 2m, 
+      "Pa": "hpa", // 30m
+      "WS": "m/s", // 30m
+      "WD": "degrees", // 30m
+      "Rs": "W/m^2", // 35m
+      "Rn": "W/m^2", // 35m
+      "PAR": "umol/s/m2",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_50cm": "℃",
+      "TS_100cm": "℃",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_30cm": "m3 m-3",
+      "SM_50cm": "m3 m-3",
+      "SM_100cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "燕山_人工针叶林": [ // 冠层高度8-11m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 20m
+      "GPP": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 3m
+      "Ta_5m": "℃",
+      "Ta_canopy": "℃", // 10m
+      "Ta_15m": "℃",
+      "Ta_20m": "℃", // '_5'：代表20m
+      "Ta_25m": "℃",
+      "Ta_30m": "℃",
+      "RH": "%",
+      "RH_5m": "%",
+      "RH_canopy": "%",
+      "RH_15m": "%",
+      "RH_20m": "%", // '_5'：代表20m
+      "RH_25m": "%",
+      "RH_30m": "%",
+      "WS": "m s-1",
+      "WS_5m": "m s-1",
+      "WS_canopy": "m s-1",
+      "WS_15m": "m s-1",
+      "WS_20m": "m s-1", // '_5'：代表20m
+      "WS_25m": "m s-1",
+      "WS_30m": "m s-1",
+      "WD_30m": "°",
+      "Pa": "kPa", // '_5'：代表20m
+      "Rg": "W m-2", // 总辐射
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_60cm": "℃",
+      "G_2cm": "W m-2",
+      "G_5cm": "W m-2",
+      "SM_5cm": "m3 m-3",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "三江源-垂穗披碱草": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 2.2m
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 1.0m
+      "Ta_canopy": "℃", // 2.2m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kPa",
+      "ea_canopy": "kPa",
+      "Pa": "kPa",
+      "TS_5cm": "℃",
+      "TS_15cm": "℃",
+      "TS_35cm": "℃",
+      "TS_55cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_15cm": "m3 m-3",
+      "SM_35cm": "m3 m-3",
+      "PAR": "μmol m-2 s-1", // 1.5m
+      "Prcp": "mm"
+    }
+  ],
+  "元江_稀树草原": [ // z_canopy = 5m // 4~6m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 1.5m
+      "Ta_canopy": "℃", // 13.5m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "hpa",
+      "ea_canopy": "hpa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg", // 13.9m
+      "Pa": "hpa", // 13.5m
+      "Rs": "W m-2", // 8.5m
+      "Rn": "W m-2", // 13.5m
+      "PAR": "μmol m-2 s-1", // 13.5m
+      "TS_0cm": "℃",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_40cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "多伦": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 4m
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2", // 4m
+      "G": "W m-2", // 2cm
+      "PAR": "gC m-2 d-1",
+      "Ta": "℃",
+      "RH": "%",
+      "TS_10cm": "℃",
+      "SM_10cm": "m3 m-3", // 0~10cm
+      "WS": "m s-1", // 4m
+      "Ustar": "m s-1",
+      "Pa": "kPa",
+      "Prcp": "mm"
+    }
+  ],
+  "当雄_高寒草甸": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 2.2m
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 1.2m
+      "Ta_canopy": "℃", // 2.2m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg",
+      "Pa": "kpa",
+      "Rs": "W m-2", // 1.2m
+      "Rn": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_5cm": "℃", // TODO: 深度存疑
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_80cm": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "海北_高寒草甸": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 2.2m
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "Hs": "W m-2",
+      "LE": "W m-2",
+      "Prcp": "mm",
+      "PAR": "gC m-2 d-1",
+      "RH": "%",
+      "RH_canopy": "%",
+      "Rn": "W m-2",
+      "SM_5cm": "m3 m-3",
+      "SM_10cm": "m3 m-3",
+      "SM_15cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_40cm": "m3 m-3",
+      "Rs": "W m-2",
+      "Ta": "K",
+      "Ta_canopy": "K",
+      "TS_5cm": "K",
+      "TS_10cm": "K",
+      "TS_15cm": "K",
+      "TS_20cm": "K",
+      "TS_40cm": "K"
+    }
+  ],
+  "若尔盖-高寒草甸": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W/m2",
+      "Hs": "W/m2",
+      "PAR": "umol m-2 d-1",
+      "Rn": "W/m2",
+      "Ta": "℃", // 1.2m
+      "RH": "%",
+      "Ta_canopy": "℃", // 2.5m
+      "RH_canopy": "%",
+      "Prcp": "mm",
+      "SM_5cm": "m3 m-3",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_30cm": "m3 m-3",
+      "SM_50cm": "m3 m-3",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_30cm": "℃",
+      "TS_50cm": "℃",
+      "Pa": "kPa",
+      "WS": "m/s", // 1.2m
+      "WS_canopy": "m/s" // 2.5m
+    }
+  ],
+  "那曲_高寒草甸": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "GPP": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "ET": "mm d-1",
+      "Hs": "W m-2",
+      "Ta": "℃", // 2.3m
+      "RH": "%", // 2.3m
+      "VPD": "kPa", // 2.3m
+      "WS": "m s-1", // 2.3m
+      "Rn": "W m-2", // 2.3m
+      "PAR": "mol m-2 d-1",
+      "Rs": "W m-2",
+      "Rln_in": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_out": "W m-2",
+      "TS_1": "℃",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "锡林浩特-典型草原": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "doy": "/",
+      "Ta": "℃", // 1.5m
+      "Ta_canopy": "℃", // 2.5m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kPa",
+      "ea_canopy": "kPa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD_2_D1": "°",
+      "WD_2_SD1": "°",
+      "Pa": "kPa",
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2",
+      "PAR": "umol m-2",
+      "PAR_canopy": "umol m-2",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_50cm": "℃",
+      "TS_100cm": "℃",
+      "G_0_1": "W m-2", // 5cm
+      "G_0_2": "W m-2",
+      "SM_5cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_50cm": "m3 m-3"
+    }
+  ],
+  "锡林浩特": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Rs": "W m-2", // 4m
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2",
+      "G": "W m-2", // 2cm
+      "PAR": "gC m-2 d-1",
+      "Ta": "℃", // 1m
+      "RH": "%",
+      "TS_10cm": "℃",
+      "SM_10cm": "m3 m-3", // 0~10cm
+      "WS": "m s-1", // 4m
+      "Ustar": "m s-1",
+      "Pa": "kPa",
+      "Prcp": "mm"
+    }
+  ],
+  "燕山_乔灌混交林": [ // 冠层高度1.7-11m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 15m
+      "GPP": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃", // 3m
+      "Ta_5m": "℃",
+      "Ta_10m": "℃",
+      "Ta_canopy": "℃", // 15m
+      "Ta_20m": "℃",
+      "Ta_25m": "℃",
+      "Ta_30m": "℃",
+      "RH": "%",
+      "RH_5m": "%",
+      "RH_10m": "%",
+      "RH_canopy": "%",
+      "RH_20m": "%",
+      "RH_25m": "%",
+      "RH_30m": "%",
+      "WS": "m s-1",
+      "WS_5m": "m s-1",
+      "WS_10m": "m s-1",
+      "WS_canopy": "m s-1",
+      "WS_20m": "m s-1", // 20m
+      "WS_25m": "m s-1",
+      "WS_30m": "m s-1",
+      "WD_7": "°",
+      "Pa": "kPa",
+      "Rg": "W m-2", // 20m，总辐射
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_60cm": "℃",
+      "G_2cm": "W m-2",
+      "G_5cm": "W m-2",
+      "SM_5cm": "m3 m-3",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "长白山_针阔混交林": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "doy": "/",
+      "Ta": "℃", // 2.5m, 8m, 22m, 26m, 32m, 50m, 60m, https://html.rhhz.net/linyekexue/html/20061022.htm
+      "Ta_8m": "℃",
+      "Ta_22m": "℃",
+      "Ta_26m": "℃",
+      "Ta_canopy": "℃", // 32m
+      "Ta_50m": "℃",
+      "Ta_60m": "℃",
+      "RH": "%",
+      "RH_8m": "%",
+      "RH_22m": "%",
+      "RH_26m": "%",
+      "RH_canopy": "%", // 32m
+      "RH_50m": "%",
+      "RH_60m": "%",
+      "WS": "m s-1",
+      "WS_8m": "m s-1",
+      "WS_22m": "m s-1",
+      "WS_26m": "m s-1",
+      "WS_canopy": "m s-1", // 32m
+      "WS_50m": "m s-1",
+      "WS_60m_S_WVT": "m s-1",
+      "WD_7_D1_WVT": "°",
+      "WD_7_SD1_WVT": "°",
+      "ea": "kPa",
+      "ea_8m": "kPa",
+      "ea_22m": "kPa",
+      "ea_26m": "kPa",
+      "ea_canopyne": "kPa", // 32m
+      "ea_50m": "kPa",
+      "ea_60m": "kPa",
+      "Pa": "kPa", // `_1`: 2.5m
+      "Rs": "W m-2", // `_5`: 32m
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2",
+      "DR_5_CM11": "W m-2", // Rg，总辐射
+      "PAR_1_1": "gC m-2 d-1",
+      "PAR_1_2": "gC m-2 d-1",
+      "PAR_1_3": "gC m-2 d-1",
+      "PAR_1_4": "gC m-2 d-1",
+      "PAR_1_5": "gC m-2 d-1",
+      "PAR_7": "gC m-2 d-1",
+      "IRCT_5": "/",
+      "TS_0_1": "℃",
+      "TS_TCAV_1": "℃",
+      "TS_107_1": "℃",
+      "TS_107_2": "℃",
+      "TS_107_3": "℃",
+      "TS_107_4": "℃",
+      "TS_107_5": "℃",
+      "TS_105T_0cm": "℃",
+      "TS_105T_5cm": "℃",
+      "TS_105T_20cm": "℃",
+      "TS_105T_50cm": "℃",
+      "TS_105T_100cm": "℃",
+      "G_1": "W m-2", // TODO: 调研
+      "G_2": "W m-2",
+      "SM_5cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_50cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "鼎湖山_针阔叶混交林": [ // 冠层高度17.5
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃",
+      "Ta_canopy": "℃",
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg",
+      "Pa": "kpa",
+      "Rs": "W m-2",
+      "Rn": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_1": "℃", // 0、5、10、15、20、40、60、80、100
+      "TS_2": "℃",
+      "TS_3": "℃",
+      "TS_4": "℃",
+      "TS_5": "℃",
+      "SM_5cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_40cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "达茂_荒漠草原": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "Hs": "W m-2",
+      "LE": "W m-2",
+      "Ta": "℃", // 2m
+      "Ta_canopy": "℃", // 3.5m
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1",
+      "WS_2_S_WVT": "m s-1",
+      "WD_D1_WVT": "°",
+      "WD_SD1_WVT": "°",
+      "Rs": "W m-2",
+      "Rn": "W m-2", // 2.5m
+      "PAR": "μmol m-2 s-1",
+      "G_1": "W m-2", // #1 土壤热通量, 8cm
+      "G_2": "W m-2", // #2 土壤热通量，二者取平均
+      "TS_TCAV": "℃",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_15cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_80cm": "℃",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "SM_30cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "崇明东滩": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "Ta": "℃",
+      "RH": "%",
+      "TS": "℃",
+      "PAR": "gC m-2 d-1",
+      "Rs": "W/m2",
+      "Rn": "W/m2",
+      "Prcp": "mm",
+      "Hs_raw": "W/m2",
+      "LE_raw": "W/m2",
+      "NEE_raw": "gC m-2 d-1",
+      "Hs": "W/m2",
+      "LE": "W/m2",
+      "NEE": "umol/m2 s"
+    }
+  ],
+  "洞庭湖_南荻": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Rn": "W m-2",
+      "Ta": "℃",
+      "TS": "℃",
+      "RH": "%",
+      "VPD": "hPa"
+    }
+  ],
+  "海北_高寒湿地": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "℃",
+      "Ta_canopy": "℃",
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kpa",
+      "ea_canopy": "kpa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg",
+      "Pa": "kpa",
+      "Rs": "W m-2",
+      "Rn": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_50cm": "℃",
+      "SM_5cm": "m3 m-3", // 文档未介绍，SM_1, SM_2, SM_3
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "盘锦-芦苇湿地": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "Ta": "K",
+      "RH": "%",
+      "Pa": "hPa",
+      "WS": "m s-1",
+      "Rs": "W m-2",
+      "Rln_in": "W m-2",
+      "PAR": "umol m-2",
+      "TS_10cm": "K",
+      "TS_20cm": "K",
+      "TS_30cm": "K",
+      "TS_40cm": "K",
+      "TS_50cm": "K",
+      "Prcp": "mm"
+    }
+  ],
+  "普定": [
+    {
+      "date": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "WS": "m s-1",
+      "Rg": "W m-2", // 总辐射
+      "Rn": "W m-2",
+      "G": "W m-2",
+      "Prcp": "mm"
+    }
+  ],
+  "海北_高寒灌丛": [
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "GPP": "gC m-2 d-1",
+      "Hs": "W m-2",
+      "LE": "W m-2",
+      "Ta": "℃",
+      "Ta_canopy": "℃",
+      "RH": "%",
+      "RH_canopy": "%",
+      "ea": "kPa",
+      "ea_canopy": "kPa",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WD": "Deg",
+      "Pa": "kPa",
+      "Rs": "W m-2",
+      "Rn": "W m-2",
+      "PAR": "μmol m-2 s-1",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_60cm": "℃",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ],
+  "燕山-山地丘陵区": [ // 冠层高度1.7m
+    {
+      "year": "/",
+      "month": "/",
+      "day": "/",
+      "NEE": "gC m-2 d-1", // 30m
+      "GPP": "gC m-2 d-1",
+      "RE": "gC m-2 d-1",
+      "LE": "W m-2",
+      "Hs": "W m-2",
+      "doy": "/",
+      "Ta": "℃", // 3m
+      "Ta_canopy": "℃", // 5m
+      "Ta_10m": "℃",
+      "Ta_15m": "℃",
+      "Ta_20m": "℃", // '_5'：代表20m
+      "Ta_25m": "℃",
+      "Ta_30m": "℃",
+      "RH": "%",
+      "RH_canopy": "%",
+      "RH_10m": "%",
+      "RH_15m": "%",
+      "RH_20m": "%", // '_5'：代表20m
+      "RH_25m": "%",
+      "RH_30m": "%",
+      "WS": "m s-1",
+      "WS_canopy": "m s-1",
+      "WS_10m": "m s-1",
+      "WS_15m": "m s-1",
+      "WS_20m": "m s-1", // '_5'：代表20m
+      "WS_25m": "m s-1",
+      "WS_30m": "m s-1",
+      "WD_30m": "°",
+      "Pa": "kPa", // '_5'：代表20m
+      "Rg": "W m-2", // 总辐射
+      "Rs": "W m-2",
+      "Rs_out": "W m-2",
+      "Rln_in": "W m-2",
+      "Rln_out": "W m-2",
+      "Rn": "W m-2",
+      "TS_5cm": "℃",
+      "TS_10cm": "℃",
+      "TS_20cm": "℃",
+      "TS_40cm": "℃",
+      "TS_60cm": "℃",
+      "G_2cm": "W m-2",
+      "G_5cm": "W m-2",
+      "SM_5cm": "m3 m-3",
+      "SM_10cm": "m3 m-3",
+      "SM_20cm": "m3 m-3",
+      "Prcp": "mm"
+    }
+  ]
+}

@@ -3,9 +3,9 @@ rm_useless_cols <- function(d) {
 }
 
 
-read_ufile <- function(f) {
+read_ufile <- function(f, ..., nrows = Inf) {
   unit <- fread(f, nrows = 1)
-  dat <- fread(f, skip = 2, header = FALSE) %>% unique() # rm duplicated unit rows
+  dat <- fread(f, skip = 2, header = FALSE, nrows = nrows) %>% unique() # rm duplicated unit rows
 
   inds_good = dat[[1]] %!in% c("-", "/") # rm unit rows
   dat <- dat[inds_good, ]
