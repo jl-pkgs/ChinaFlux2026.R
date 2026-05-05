@@ -1,0 +1,11 @@
+```{r}
+source("Z:/st261/Flux/ChinaFlux/main_pkgs.R")
+```
+
+```{r}
+d_flux = read_file("data-raw/ChinaFlux_CRO_锦州_2005-2014/锦州_Flux_日_2005_2014.csv")
+d_met = read_file("data-raw/ChinaFlux_CRO_锦州_2005-2014/锦州_Met_日_2005_2014.csv")
+
+d = cbind(d_flux, d_met[, -(1:3)])
+fwrite(d, "data/CRO_锦洲_FluxMet_2005-2014_day.csv", quote=FALSE)
+```

@@ -1,0 +1,16 @@
+```{r}
+pacman::p_load(
+    Ipaper, data.table, dplyr, lubridate
+)
+```
+
+```{r}
+xlsx2csv <- function(f) {
+    fout = gsub(".xlsx", ".csv", f)
+    d = read_xlsx(f)
+    fwrite(d, fout, bom=TRUE)
+}
+
+xlsx2csv("./GRA_那曲_高寒草甸_2014-2018_30min_Flux.xlsx")
+xlsx2csv("./GRA_那曲_高寒草甸_2014-2018_30min_Met.xlsx")
+```

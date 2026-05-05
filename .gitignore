@@ -1,4 +1,4 @@
-data-raw/ALL
+# data-raw/ALL
 graphify-out
 images
 *.json
@@ -6,7 +6,7 @@ images
 # *.pdf
 
 # *.txt
-*.csv
+# data/*.csv
 TEMP
 
 *.html
