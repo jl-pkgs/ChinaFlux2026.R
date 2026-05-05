@@ -1,0 +1,27 @@
+```{r}
+pacman::p_load(
+  Ipaper, data.table, dplyr, lubridate,
+  jsonlite,
+  ggplot2, gg.layers, patchwork
+)
+
+str_site <- function(f) {
+  str_extract(basename(f), ".*(?=_30min)")
+}
+```
+
+```{r}
+fs = dir2("data-raw/Hourly/", "*.csv")
+sites = str_site(fs)
+names(fs) = sites
+fs
+```
+
+```{r}
+lst = map(fs, \(f) read_ufile(f, nrows = 10))
+info = map(lst, "unit")
+```
+
+```{r}
+write_json(info, "./ChinaFlux_Variable_Info_Hourly.json", pretty = TRUE)
+```
