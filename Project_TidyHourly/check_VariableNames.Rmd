@@ -15,9 +15,7 @@ fs = dir2("data-raw/Hourly/", "*.csv")
 sites = str_site(fs)
 names(fs) = sites
 fs
-```
 
-```{r}
 lst = map(fs, \(f) read_ufile(f, nrows = 10))
 info = map(lst, "unit")
 ```

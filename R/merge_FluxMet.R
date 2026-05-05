@@ -29,6 +29,7 @@ merge_hourly_FluxMet <- function(f_met, SITE, VegType, VegName, ...,
   d_flux = fread_glue(f_flux) %>% unique() %>% rm_useless_cols()
 
   by = intersect(names(d_flux), VARS_DATE)
+  browser()
   d = merge(d_flux, d_met, by)
 
   file = glue(
@@ -66,3 +67,12 @@ patch_varnames <- function(f_met, f_var) {
   }
   return(d)
 }
+
+
+# read_fluxmet <- function(f_met) {
+#   f_flux <- gsub("Met", "Flux", f_met)
+#   met <- read_ufile(f_met)
+#   flux <- read_ufile(f_flux)
+#   l <- merge_ufile(flux, met)
+#   l
+# }

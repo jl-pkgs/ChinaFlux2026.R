@@ -1,0 +1,25 @@
+```{r}
+pacman::p_load(
+    Ipaper, data.table, dplyr, lubridate
+)
+devtools::load_all("../..")
+```
+
+```{r}
+f_met = "data/盘锦-稻田站_Met_30min_2018-2020.csv"
+f_flux <- gsub("Met", "Flux", f_met)
+```
+
+```{r}
+met <- read_ufile(f_met)
+met$data %<>% mutate(date = date + dhours(hour(time)) + dminutes(minute(time))) %>%
+  select(-time)
+met$unit %<>% select(-time)
+
+flux <- read_ufile(f_flux)
+flux$data %<>% mutate(date = ymd_hm(paste0(date, " ", time))) %>% select(-time)
+flux$unit %<>% select(-time)
+
+write_ufile(met, basename(f_met))
+write_ufile(flux, basename(f_flux))
+```
