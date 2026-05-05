@@ -8,3 +8,6 @@ images
 # *.txt
 *.csv
 TEMP
+
+*.html
+backup

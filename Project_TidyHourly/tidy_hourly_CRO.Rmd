@@ -5,6 +5,7 @@ pacman::p_load(
   ggplot2, gg.layers, patchwork
 )
 
+devtools::load_all(".")
 outdir = "data-raw/Hourly"
 
 guess_fout <- function(f_met, outdir) {

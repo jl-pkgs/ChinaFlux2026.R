@@ -1,7 +1,7 @@
 ```{r}
 pacman::p_load(Ipaper, data.table, dplyr, lubridate, stringr, zeallot)
 devtools::load_all(".")
-outdir = "data-raw/0_Hourly"
+outdir = "data-raw/Hourly"
 ```
 
 ## CRO
@@ -12,7 +12,7 @@ outdir = "data-raw/0_Hourly"
 
 ## GRA
 ```{r}
-dir_root = "data-raw/ChinaFlux_GRA_当雄_高寒草甸_2004-2010/"
+dir_root = "data-raw/ALL/ChinaFlux_GRA_当雄_高寒草甸_2004-2010/"
 
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "当雄"
@@ -22,7 +22,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-dir_root = "data-raw/ChinaFlux_GRA_海北_2015-2020_高寒草甸/"
+dir_root = "data-raw/ALL/ChinaFlux_GRA_海北_2015-2020_高寒草甸/"
 f_met = dir2(dir_root, "_Met_30min")
 
 SITE = "海北"
@@ -34,7 +34,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ## EBF （5个站点）
 
 ```{r}
-dir_root = "data-raw/ChinaFlux_EBF_哀牢山_EBF-2009-2013/"
+dir_root = "data-raw/ALL/ChinaFlux_EBF_哀牢山_EBF-2009-2013/"
 f_met = dir2(dir_root, "_Met_30min")
 
 SITE = "哀牢山"
@@ -44,7 +44,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-dir_root = "data-raw/ChinaFlux_EBF_海南儋州-橡胶林_2010-2018/"
+dir_root = "data-raw/ALL/ChinaFlux_EBF_海南儋州-橡胶林_2010-2018/"
 f_met = "{dir_root}/儋州橡胶林_Met_数据（30分钟）_2010_2018.csv" %>% glue()
 
 SITE = "海南儋州"
@@ -54,7 +54,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-dir_root = "data-raw/ChinaFlux_EBF_西双版纳-橡胶林_2010-2014/"
+dir_root = "data-raw/ALL/ChinaFlux_EBF_西双版纳-橡胶林_2010-2014/"
 f_met = dir2(dir_root, "_Met_30min")
 
 SITE = "西双版纳"
@@ -64,7 +64,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-dir_root = "data-raw/ChinaFlux_EBF_西双版纳_热带雨林_2003-2015/"
+dir_root = "data-raw/ALL/ChinaFlux_EBF_西双版纳_热带雨林_2003-2015/"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "西双版纳"
 VegType = "EBF"
@@ -73,7 +73,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-dir_root = "data-raw/EBF_金佛山_2020-2021/"
+dir_root = "data-raw/ALL/EBF_金佛山_2020-2021/"
 f_met = "{dir_root}/金佛山-亚热带-EBF_Hour_Met_2020_2021.csv" %>% glue()
 
 SITE = "金佛山"
@@ -85,7 +85,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ## DBF
 
 ```{r}
-dir_root = "data-raw/ChinaFlux_DBF_帽儿山_DBF-2016-2018/"
+dir_root = "data-raw/ALL/ChinaFlux_DBF_帽儿山_DBF-2016-2018/"
 dir(dir_root, "30min")[2]
 # code(dir_root)
 
@@ -97,8 +97,18 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ## ENF
+
 ```{r}
-dir_root = "data-raw/ENF_呼中_北方林森林_2014-2018"
+f_met = "data-raw/ALL/ChinaFlux_ENF_千烟洲_人工针叶林_2003-2010/千烟洲_Met_30min_2003_2015.csv"
+
+SITE = "千烟洲"
+VegType = "ENF"
+VegName = "人工针叶林"
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
+```
+
+```{r}
+dir_root = "data-raw/ALL/ENF_呼中_北方林森林_2014-2018"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "呼中"
 VegType = "ENF"
@@ -106,32 +116,33 @@ VegName = "北方林森林"
 merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
+> 燕山
 ```{r}
-f_met = "data-raw/燕山-山地丘陵区_2020-2021/燕山灌丛_Met_30min_2020_2021.csv" # 共用一个met
+f_met = "data-raw/ALL/燕山-山地丘陵区_2020-2021/燕山灌丛_Met_30min_2020_2021.csv" # 共用一个met
 SITE = "燕山"
 
 VegType = "WSA"
 VegName = "灌丛" # 山地灌丛, 荆条 + 扁担杆
 # z_canopy = 1.7
-f_flux = "data-raw/燕山-山地丘陵区_2020-2021/燕山灌丛_Flux_30min_2020_2021.csv" # z_tower = 30m
+f_flux = "data-raw/ALL/燕山-山地丘陵区_2020-2021/燕山灌丛_Flux_30min_2020_2021.csv" # z_tower = 30m
 merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir, f_flux = f_flux)
 
 VegType = "MF"
 VegName = "乔灌混交林" # 油松 + 荆条
 # z_canopy = 1.7 ~ 11
-f_flux = "data-raw/燕山-山地丘陵区_2020-2021/燕山乔灌混交林_Flux_30min_2020_2021.csv" # z_tower = 15m
+f_flux = "data-raw/ALL/燕山-山地丘陵区_2020-2021/燕山乔灌混交林_Flux_30min_2020_2021.csv" # z_tower = 15m
 merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir, f_flux = f_flux)
 
 VegType = "ENF"
 VegName = "人工针叶林" # 油松 + 侧柏
 # z_canopy = 8 ~ 11
-f_flux = "data-raw/燕山-山地丘陵区_2020-2021/燕山人工针叶林_Flux_30min_2020_2021.csv" # z_tower = 20m
+f_flux = "data-raw/ALL/燕山-山地丘陵区_2020-2021/燕山人工针叶林_Flux_30min_2020_2021.csv" # z_tower = 20m
 merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir, f_flux = f_flux)
 ```
 
 ## MF
 ```{r}
-dir_root = "data-raw/ChinaFlux_MF_鼎湖山_针阔叶混交林_2003-2010/"
+dir_root = "data-raw/ALL/ChinaFlux_MF_鼎湖山_针阔叶混交林_2003-2010/"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "鼎湖山"
 VegType = "MF"
@@ -141,7 +152,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 
 ```{r}
 # 温带原始针阔叶混交林
-dir_root = "data-raw/ChinaFlux_MF_长白山_阔叶红松林_2003-2010/"
+dir_root = "data-raw/ALL/ChinaFlux_MF_长白山_阔叶红松林_2003-2010/"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "长白山"
 VegType = "MF"
@@ -151,7 +162,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 
 ## DBF
 ```{r}
-dir_root = "data-raw/DBF_宝天曼_天然栎林_2017-2018/"
+dir_root = "data-raw/ALL/DBF_宝天曼_天然栎林_2017-2018/"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "宝天曼"
 VegType = "DBF"
@@ -160,7 +171,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-dir_root = "data-raw/DBF_小浪底_栓皮栎人工林_2016-2017/"
+dir_root = "data-raw/ALL/DBF_小浪底_栓皮栎人工林_2016-2017/"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "小浪底"
 VegType = "DBF"
@@ -170,7 +181,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 
 ## GRA
 ```{r}
-f_met = "data-raw/GRA_内蒙-锡林浩特_刈割草原_2006-2015/锡林浩特_Hour_Met_2006-2015.csv"
+f_met = "data-raw/ALL/GRA_内蒙-锡林浩特_刈割草原_2006-2015/锡林浩特_Hour_Met_2006-2015.csv"
 SITE = "锡林浩特"
 VegType = "GRA"
 VegName = "刈割草原"
@@ -178,7 +189,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-f_met = "data-raw/ChinaFlux_GRA_内蒙-锡林浩特-典型草原_2003-2010年/内蒙古_Met_30min_2003_2010.csv"
+f_met = "data-raw/ALL/ChinaFlux_GRA_内蒙-锡林浩特-典型草原_2003-2010年/内蒙古_Met_30min_2003_2010.csv"
 SITE = "锡林浩特"
 VegType = "GRA"
 VegName = "典型草原"
@@ -186,7 +197,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-f_met = "data-raw/ChinaFlux_GRA_三江源-垂穗披碱草_2012-2016/三江源垂穗披-碱草人工草地_Met_30min_2012_2016.csv"
+f_met = "data-raw/ALL/ChinaFlux_GRA_三江源-垂穗披碱草_2012-2016/三江源垂穗披-碱草人工草地_Met_30min_2012_2016.csv"
 SITE = "三江源"
 VegType = "GRA"
 VegName = "人工垂穗披碱草"
@@ -194,7 +205,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-dir_root = "data-raw/ChinaFlux_GRA_若尔盖-高寒草甸_2015-2020"
+dir_root = "data-raw/ALL/ChinaFlux_GRA_若尔盖-高寒草甸_2015-2020"
 f_met = dir2(dir_root, "_Met_30min.csv")
 SITE = "若尔盖"
 VegType = "GRA"
@@ -203,21 +214,17 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-f_met = "data-raw/GRA_那曲_高寒草甸_2014-2018/GRA_那曲_高寒草甸_2014-2018_30min_Met.csv"
+f_met = "data-raw/ALL/GRA_那曲_高寒草甸_2014-2018/GRA_那曲_高寒草甸_2014-2018_30min_Met.csv"
 SITE = "那曲"
 VegType = "GRA"
 VegName = "高寒草甸"
 merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
-```{r}
-f_met = "data-raw/"
-```
-
 ## 其他
 > WSA
 ```{r}
-f_met = "data-raw/ChinaFlux_WSA_海北_高寒灌丛_2011-2020/海北_Met_30min_2011-2020.csv"
+f_met = "data-raw/ALL/ChinaFlux_WSA_海北_高寒灌丛_2011-2020/海北_Met_30min_2011-2020.csv"
 SITE = "海北"
 VegType = "WSA"
 VegName = "高寒灌丛"
@@ -225,8 +232,8 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-f_met = "data-raw/WET_海北_高寒湿地-2004-2009/海北湿地_Met_30min_2003_2010.csv"
-f_flux = "data-raw/WET_海北_高寒湿地-2004-2009/海北湿地_Flux_30min_2004_2009.csv"
+f_met = "data-raw/ALL/WET_海北_高寒湿地-2004-2009/海北湿地_Met_30min_2003_2010.csv"
+f_flux = "data-raw/ALL/WET_海北_高寒湿地-2004-2009/海北湿地_Flux_30min_2004_2009.csv"
 
 SITE = "海北"
 VegType = "WET"
@@ -235,7 +242,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir, f_flux = f_
 ```
 
 ```{r}
-f_met = "data-raw/ChinaFlux_GRA_元江-干热河谷_稀树草原_2013-2015/元江站_Met_30min_2013_2015.csv"
+f_met = "data-raw/ALL/ChinaFlux_GRA_元江-干热河谷_稀树草原_2013-2015/元江站_Met_30min_2013_2015.csv"
 SITE = "元江"
 VegType = "GRA"
 VegName = "稀树草原"
@@ -243,7 +250,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ```{r}
-f_met = "data-raw/GRA_内蒙-多伦_2006-2015/多伦_Hour_Met_2006-2015.csv"
+f_met = "data-raw/ALL/GRA_内蒙-多伦_2006-2015/多伦_Hour_Met_2006-2015.csv"
 SITE = "多伦"
 VegType = "GRA"
 VegName = "典型草原"

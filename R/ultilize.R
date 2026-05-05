@@ -45,5 +45,5 @@ dir2 <- function(path = ".", pattern = NULL, full.names = TRUE, ...) {
 }
 
 str_year = function(f) {
-  str_extract_all(f, "\\d{4}")[[1]]
+  str_extract_all(basename(f), "\\d{4}")[[1]]
 }
