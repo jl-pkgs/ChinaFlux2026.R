@@ -1,5 +1,0 @@
-[format]
-persistent-line-breaks = true
-indent-width = 2
-skip = ["foreach", "%do%"]
-default-exclude = true

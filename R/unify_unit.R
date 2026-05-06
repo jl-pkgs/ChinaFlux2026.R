@@ -1,13 +1,15 @@
 # ── 标量转换 ──────────────────────────────────────────────────────────────────
-hPa2kPa <- \(x) x / 10
-pct2m3m3 <- \(x) x / 100
-K2degC <- \(x) x - 273.15
+# styler: off
+hPa2kPa      <- \(x) x / 10
+pct2m3m3     <- \(x) x / 100
+K2degC       <- \(x) x - 273.15
 umol_s_2gC_d <- \(x) x * 12 * 86400 / 1e6
 gC_d_2umol_s <- \(x) x / 12 * 1e6 / 86400
-mgCO2_2gC <- \(x) x * 86400 / 1000 * 12 / 44
-mgCO2_2umol <- \(x) x * 1000 / 44
-gCO2_2gC <- \(x) x / 44 * 12
-MJ_2W <- \(x) x * 1e6 / 86400
+mgCO2_2gC    <- \(x) x * 86400 / 1000 * 12 / 44
+mgCO2_2umol  <- \(x) x * 1000 / 44
+gCO2_2gC     <- \(x) x / 44 * 12
+MJ_2W        <- \(x) x * 1e6 / 86400
+# styler: on
 
 # ── 通用内部工具 ───────────────────────────────────────────────────────────────
 .find_vars <- function(l, unit_test) {
@@ -63,10 +65,8 @@ fix_SM_pct <- function(l) {
 
 # hPa → kPa
 fix_Pa <- function(l) {
-  # Pa
+  # Pa, VPD
   l <- .fix(l, \(u) u == "hPa" & names(u) == "Pa", hPa2kPa, "kPa")
-
-  # VPD
   l <- .fix(l, \(u) u == "hPa" & startsWith(names(u), "VPD"), hPa2kPa, "kPa")
 }
 
@@ -85,28 +85,24 @@ fix_unit_notation <- function(l) {
     "g m-2 s-1" = c("g·m-2·s-1", "g/m-2s-1"),
     "gC m-2 d-1" = "g C m-2 d-1",
     "μmol m-2 s-1" = \(u) {
-      u %in%
-        c("μmol/m2/s", "umol/s/m2", "umol·m-2·s-1", "umol m-2 s-1") &
+      u %in% c("μmol/m2/s", "umol/s/m2", "umol·m-2·s-1", "umol m-2 s-1") &
         startsWith(names(u), "PAR")
     },
     "Deg" = \(u) {
       u %in% c("degree", "degrees", "°") & startsWith(names(u), "WD")
     },
     "µmol CO2 m-2 s-1" = \(u) {
-      u %in%
-        c(
-          "umol m-2 s-1",
-          "umolm-2s-1",
-          "umol·m-2·s-1",
-          "umol/s/m2",
-          "μmol m-2 s-1",
-          "μmol/m2/s"
-        ) &
-        !startsWith(names(u), "PAR")
+      u %in% c(
+        "umol m-2 s-1",
+        "umolm-2s-1",
+        "umol·m-2·s-1",
+        "umol/s/m2",
+        "μmol m-2 s-1",
+        "μmol/m2/s"
+      ) & !startsWith(names(u), "PAR")
     },
     "°C" = \(u) {
-      u %in%
-        c("℃", "C", "Deg C", "°") &
+      u %in% c("℃", "C", "Deg C", "°") &
         (startsWith(names(u), "Ta") |
           startsWith(names(u), "TS_") |
           startsWith(names(u), "IRCT"))
@@ -123,8 +119,6 @@ fix_radiation <- function(l) {
 
 # ── 碳通量模块（日 / 小时分离）────────────────────────────────────────────────
 fix_carbon_daily <- function(l) {
-  l <- .fix(l, \(u) u == "gCO2 m-2 d-1", gCO2_2gC, "gC m-2 d-1")
-
   umol_units <- c(
     "umol m-2 s-1",
     "umolm-2s-1",
@@ -133,30 +127,19 @@ fix_carbon_daily <- function(l) {
     "µmol CO2 m-2 s-1",
     "μmol CO2 m-2 s-1"
   )
-  l <- .fix(
-    l,
-    \(u) u %in% umol_units & !startsWith(names(u), "PAR"),
-    umol_s_2gC_d,
-    "gC m-2 d-1"
-  )
-
-  .fix(l, \(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1"), mgCO2_2gC, "gC m-2 d-1")
+  l <- .fix(l, \(u) u == "gCO2 m-2 d-1", gCO2_2gC, "gC m-2 d-1")
+  l %>%
+    .fix(\(u) u %in% umol_units & !startsWith(names(u), "PAR"), umol_s_2gC_d, "gC m-2 d-1") %>%
+    .fix(\(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1"), mgCO2_2gC, "gC m-2 d-1")
 }
 
 fix_carbon_hourly <- function(l) {
   # This handles metadata such as Jinfoshan Forest_Hourly where 30-min fluxes
   # are labelled as daily carbon units; verify against raw data ranges if new
   # sites expose the same unit.
-  l <- .fix(
-    l,
-    \(u) u %in% c("g C m-2 d-1", "gC m-2 d-1"),
-    gC_d_2umol_s,
-    "µmol CO2 m-2 s-1"
-  )
-
-  l <- .fix(l, \(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1"), mgCO2_2umol, "µmol CO2 m-2 s-1")
-
-  l
+  l %>%
+    .fix(\(u) u %in% c("g C m-2 d-1", "gC m-2 d-1"), gC_d_2umol_s, "µmol CO2 m-2 s-1") %>%
+    .fix(\(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1"), mgCO2_2umol, "µmol CO2 m-2 s-1")
 }
 
 # ── 组合函数 ──────────────────────────────────────────────────────────────────
@@ -165,8 +148,8 @@ unify_unit_daily <- function(l) {
   l |>
     fix_unit_notation() |>
     fix_GPP() |>
-    fix_radiation() |>
     fix_carbon_daily() |>
+    fix_radiation() |>
     fix_temp_K() |>
     fix_SM_pct() |>
     fix_Pa()
