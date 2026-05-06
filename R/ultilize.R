@@ -53,19 +53,23 @@ str_year = function(f) {
 }
 
 select_any <- function(dt, ...) {
-  # 构造一个包含所有目标列的虚拟参考框架
-  expr <- rlang::expr(c(...))
-  vars <- tryCatch(
-    tidyselect::eval_select(expr, data = dt) |> names(),
-    error = function(e) {
-      # 提取 all_of/any_of 中的变量名
-      rlang::eval_tidy(rlang::expr(c(...)))
+  dots <- rlang::enquos(...)
+  vars <- unlist(lapply(dots, function(q) {
+    expr <- rlang::quo_get_expr(q)
+    if (rlang::is_call(expr, c("any_of", "all_of"))) {
+      return(rlang::eval_bare(expr[[2]], rlang::quo_get_env(q)))
     }
-  )
-  
+    names(tidyselect::eval_select(expr, data = dt))
+  }), use.names = FALSE)
+  vars <- unique(vars)
+
   missing <- setdiff(vars, names(dt))
   if (length(missing)) {
-    dt[, (missing) := NA]
+    if (data.table::is.data.table(dt)) {
+      dt[, (missing) := NA]
+    } else {
+      dt[missing] <- NA
+    }
   }
-  dt[, ..vars]
+  select(dt, all_of(vars))
 }

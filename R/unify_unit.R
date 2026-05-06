@@ -8,6 +8,7 @@ gC_d_2umol_s <- \(x) x / 12 * 1e6 / 86400
 mgCO2_2gC    <- \(x) x * 86400 / 1000 * 12 / 44
 mgCO2_2umol  <- \(x) x * 1000 / 44
 gCO2_2gC     <- \(x) x / 44 * 12
+gCO2_s_2umol_s <- \(x) x * 1e6 / 44
 MJ_2W        <- \(x) x * 1e6 / 86400
 # styler: on
 
@@ -65,9 +66,10 @@ fix_SM_pct <- function(l) {
 
 # hPa → kPa
 fix_Pa <- function(l) {
-  # Pa, VPD
+  # Pa, VPD, ea
   l <- .fix(l, \(u) u == "hPa" & names(u) == "Pa", hPa2kPa, "kPa")
   l <- .fix(l, \(u) u == "hPa" & startsWith(names(u), "VPD"), hPa2kPa, "kPa")
+  l <- .fix(l, \(u) u == "hPa" & startsWith(names(u), "ea"), hPa2kPa, "kPa")
 }
 
 
@@ -79,14 +81,14 @@ fix_unit_notation <- function(l) {
   replacement <- list(
     "kPa" = "kpa",
     "hPa" = "hpa",
-    "m3 m-3" = "m^3 m^-3",
-    "W m-2" = c("W/m^2", "W·m-2", "Wm-2", "W.m-2"),
+    "m3 m-3" = c("m^3 m^-3", "m3/m3"),
+    "W m-2" = c("W/m^2", "W/m2", "W·m-2", "Wm-2", "W.m-2"),
     "m s-1" = c("m·s-1", "m/s", "\tm s-1"),
-    "g m-2 s-1" = c("g·m-2·s-1", "g/m-2s-1"),
+    "g m-2 s-1" = c("g·m-2·s-1", "g/m-2s-1", "gm-2s-1", "g H2O m-2 s-1"),
     "gC m-2 d-1" = "g C m-2 d-1",
     "μmol m-2 s-1" = \(u) {
-      u %in% c("μmol/m2/s", "umol/s/m2", "umol·m-2·s-1", "umol m-2 s-1") &
-        startsWith(names(u), "PAR")
+      u %in% c("μmol/m2/s", "umol/s/m2", "umol/(m^2 s)", "umol·m-2·s-1", "umol m-2 s-1", "umol m-2", "µmol m-2 s-1") &
+        (startsWith(names(u), "PAR") | startsWith(names(u), "PPFD"))
     },
     "Deg" = \(u) {
       u %in% c("degree", "degrees", "°") & startsWith(names(u), "WD")
@@ -96,15 +98,21 @@ fix_unit_notation <- function(l) {
         "umol m-2 s-1",
         "umolm-2s-1",
         "umol·m-2·s-1",
+        "umolCO2 m-2 s-1",
         "umol/s/m2",
+        "µmol m-2 s-1",
         "μmol m-2 s-1",
         "μmol/m2/s"
-      ) & !startsWith(names(u), "PAR")
+      ) & !startsWith(names(u), "PAR") & !startsWith(names(u), "PPFD")
     },
     "°C" = \(u) {
       u %in% c("℃", "C", "Deg C", "°") &
         (startsWith(names(u), "Ta") |
+          startsWith(names(u), "TA") |
+          startsWith(names(u), "T_canopy") |
           startsWith(names(u), "TS_") |
+          startsWith(names(u), "Ts_") |
+          names(u) == "TS" |
           startsWith(names(u), "IRCT"))
     }
   )
@@ -130,7 +138,7 @@ fix_carbon_daily <- function(l) {
   l <- .fix(l, \(u) u == "gCO2 m-2 d-1", gCO2_2gC, "gC m-2 d-1")
   l %>%
     .fix(\(u) u %in% umol_units & !startsWith(names(u), "PAR"), umol_s_2gC_d, "gC m-2 d-1") %>%
-    .fix(\(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1"), mgCO2_2gC, "gC m-2 d-1")
+    .fix(\(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1", "mgCO2 m-2 s-1"), mgCO2_2gC, "gC m-2 d-1")
 }
 
 fix_carbon_hourly <- function(l) {
@@ -139,7 +147,8 @@ fix_carbon_hourly <- function(l) {
   # sites expose the same unit.
   l %>%
     .fix(\(u) u %in% c("g C m-2 d-1", "gC m-2 d-1"), gC_d_2umol_s, "µmol CO2 m-2 s-1") %>%
-    .fix(\(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1"), mgCO2_2umol, "µmol CO2 m-2 s-1")
+    .fix(\(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1", "mgCO2 m-2 s-1"), mgCO2_2umol, "µmol CO2 m-2 s-1") %>%
+    .fix(\(u) u == "g CO2 m-2 s-1", gCO2_s_2umol_s, "µmol CO2 m-2 s-1")
 }
 
 # ── 组合函数 ──────────────────────────────────────────────────────────────────
@@ -161,6 +170,7 @@ unify_unit_hourly <- function(l) {
     fix_unit_notation() |>
     fix_GPP() |>
     fix_carbon_hourly() |>
+    fix_radiation() |>
     fix_temp_K() |>
     fix_SM_pct() |>
     fix_Pa()
