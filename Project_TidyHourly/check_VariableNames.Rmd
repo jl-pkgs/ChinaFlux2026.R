@@ -11,20 +11,34 @@ str_site <- function(f) {
 ```
 
 ```{r}
-fs = dir2("data-raw/Hourly/", "*.csv")
-sites = str_site(fs)
-names(fs) = sites
+fs <- dir2("data-raw/Hourly/", "*.csv")
+sites <- str_site(fs)
+names(fs) <- sites
 fs
 
-lst = map(fs, \(f) read_ufile(f, nrows = 10))
-info = map(lst, "unit")
+lst <- map(fs, \(f) read_ufile(f, nrows = 10))
+info <- map(lst, "unit")
 ```
 
 ```{r}
-write_json(info, "./ChinaFlux_Variable_Info_Hourly.json", pretty = TRUE)
+# write_json(info, "./ChinaFlux_Variable_Info_Hourly.json", pretty = TRUE)
 ```
 
 ```{r}
-inds = grep("EBF|ENF|MF|DBF", sites)
+inds <- grep("EBF|ENF|MF|DBF", sites)
 write_json(info[inds], "./ChinaFlux_Variable_Info_Forest_Hourly.json", pretty = TRUE)
+```
+
+```{r}
+tidy_unit <- function(d) {
+  data.table(
+    name = names(d), name_new = NA_character_,
+    unit = unlist(d), unit_new = NA_character_, comment = ""
+  )
+}
+
+res = map(info[inds], tidy_unit)
+r = melt_list(res, "site")
+fwrite(r, "data/Unit/ChinaFlux_Variable_Info_Forest_Hourly.csv", bom = TRUE)
+# write_json(res, "./ChinaFlux_Variable_Info_Forest_Hourly_V2.json", pretty = TRUE)
 ```

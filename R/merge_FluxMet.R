@@ -29,7 +29,6 @@ merge_hourly_FluxMet <- function(f_met, SITE, VegType, VegName, ...,
   d_flux = fread_glue(f_flux) %>% unique() %>% rm_useless_cols()
 
   by = intersect(names(d_flux), VARS_DATE)
-  browser()
   d = merge(d_flux, d_met, by)
 
   file = glue(
@@ -57,7 +56,6 @@ patch_varnames <- function(f_met, f_var) {
 
   i_name = which(vars[[1]] %in% c("year", "date", "time"))
   i_unit = which(vars[[1]] %in% c("", "-", "/"))
-
   if (length(J) == ncol(d)) { # 全部变量匹配
     names(d) = unlist(vars[i_name, ]) # names
     d[1, ] = vars[i_unit, ] # unit, make sure 1st row is unit
