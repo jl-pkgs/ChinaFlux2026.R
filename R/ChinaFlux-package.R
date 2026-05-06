@@ -10,10 +10,18 @@ NULL
 
 add_time <- function(d) {
   # d <- d[, lapply(.SD, as.numeric)]
-  d %>%
-    mutate(across(year:minute, as.numeric)) %>%
-    mutate(time = make_datetime(year, month, day, hour, minute), .before = "year") |>
-    select(-year, -month, -day, -hour, -minute)
+  inds = match(c("year", "doy", "hour"), names(d)) %>% rm_empty()
+  use_yday = length(inds) == 3
+  if (use_yday) {
+    d %>%
+    mutate(time = make_datetime(year, 1, 1, 0) + ddays(doy - 1) + dhours(hour), .before = "year") %>%
+    select(-year, -doy, -hour)
+  } else {
+    d %>%
+      mutate(across(year:minute, as.numeric)) %>%
+      mutate(time = make_datetime(year, month, day, hour, minute), .before = "year") %>%
+      select(-year, -month, -day, -hour, -minute)
+  }
 }
 
 add_date <- function(d) {

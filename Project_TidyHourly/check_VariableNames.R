@@ -16,7 +16,6 @@ tidy_unit <- function(d) {
   )
 }
 
-
 # %% 
 fs <- dir2("data-raw/Hourly/", "*.csv")
 sites <- str_site(fs)
@@ -43,7 +42,8 @@ fwrite(r, "data/Unit/ChinaFlux_Variable_Info_Forest_Hourly.csv", bom = TRUE)
 
 
 # %% 
-vars_need = c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp", "WS_canopy")
+vars_need = c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
+# vars_need = c("Ta", "WS", "Rs_out", "Rln_out")
 
 res = lst_unit[inds] %>% map(function(d) {
   select(d, any_of(vars_need))
@@ -51,6 +51,28 @@ res = lst_unit[inds] %>% map(function(d) {
 
 nvar = sapply(res, ncol)
 table(nvar)
-res[nvar == 5]
+# res[nvar == 1]
+# res[nvar == 3]
+# res[nvar == 4]
 
-# %% 余下12个站点。
+
+
+
+# %% 导出驱动数据
+lst <- map(fs[inds], \(f) read_ufile(f, nrows = Inf))
+lst_unit <- map(lst, "unit")
+lst_data <- map(lst, "data")
+
+# %% 
+res = map(seq_along(lst_data), function(i) {
+  site = names(lst_data)[i]
+  d = lst_data[[i]]
+  # u = lst_unit[[i]]
+  # vars = names(u)[u %in% vars_need]
+  d %>% add_time() %>% select_any(time, any_of(vars_need)) %>% 
+    mutate(site = site, .before = 1)
+})
+df = rbindlist(res)
+
+fwrite(df, "data-raw/BEPS/Forcing_Hourly_Met_BEPS_Forest_sp12.csv", bom=TRUE)
+# df = melt_list(res, "site", fill = TRUE)
