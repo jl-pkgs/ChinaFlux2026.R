@@ -9,28 +9,6 @@ outdir = "data-raw/Hourly"
 ```{r}
 ```
 
-
-## GRA
-```{r}
-dir_root = "data-raw/ALL/ChinaFlux_GRA_当雄_高寒草甸_2004-2010/"
-
-f_met = dir2(dir_root, "_Met_30min")
-SITE = "当雄"
-VegType = "GRA"
-VegName = "高寒草甸"
-merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
-```
-
-```{r}
-dir_root = "data-raw/ALL/ChinaFlux_GRA_海北_2015-2020_高寒草甸/"
-f_met = dir2(dir_root, "_Met_30min")
-
-SITE = "海北"
-VegType = "GRA"
-VegName = "高寒草甸"
-merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
-```
-
 ## EBF （5个站点）
 
 ```{r}
@@ -180,6 +158,25 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```
 
 ## GRA
+```{r}
+dir_root = "data-raw/ALL/ChinaFlux_GRA_当雄_高寒草甸_2004-2010/"
+f_met = dir2(dir_root, "_Met_30min")
+SITE = "当雄"
+VegType = "GRA"
+VegName = "高寒草甸"
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
+```
+
+```{r}
+dir_root = "data-raw/ALL/ChinaFlux_GRA_海北_2015-2020_高寒草甸/"
+f_met = dir2(dir_root, "_Met_30min")
+
+SITE = "海北"
+VegType = "GRA"
+VegName = "高寒草甸"
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
+```
+
 ```{r}
 f_met = "data-raw/ALL/GRA_内蒙-锡林浩特_刈割草原_2006-2015/锡林浩特_Hour_Met_2006-2015.csv"
 SITE = "锡林浩特"
