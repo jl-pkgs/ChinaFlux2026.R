@@ -58,12 +58,11 @@ table(nvar)
 
 
 
-# %% 导出驱动数据
+# %% 1. Met
 lst <- map(fs[inds], \(f) read_ufile(f, nrows = Inf))
 lst_unit <- map(lst, "unit")
 lst_data <- map(lst, "data")
 
-# %% 
 res = map(seq_along(lst_data), function(i) {
   site = names(lst_data)[i]
   d = lst_data[[i]]
@@ -74,5 +73,23 @@ res = map(seq_along(lst_data), function(i) {
 })
 df = rbindlist(res)
 
-fwrite(df, "data-raw/BEPS/Forcing_Hourly_Met_BEPS_Forest_sp12.csv", bom=TRUE)
+fwrite(df, "data-raw/BEPS/Forcing_Met_Hourly_BEPS_Forest_sp12.csv", bom = TRUE)
 # df = melt_list(res, "site", fill = TRUE)
+
+## 2. Flux
+# %%
+df = fread(
+  "Z:/Researches/ET_ModelDev/data-raw/Flux/Flux_PART1_ChinaFlux_tidied_Daily_2003-2022_st39_v20260403.csv"
+)
+st_full = fread("data/st_flux39_names.csv")
+st = st_full[site %in% names(lst_data)]
+
+df_flux = df[name %in% st$name, ] %>% 
+  mutate(site = factor(name, st$name, st$site))
+fwrite(df_flux, "data-raw/BEPS/Forcing_Flux_Daily_BEPS_Forest_sp12.csv")
+
+# %% 3. lai
+st
+lst_LAI = readRDS("data-raw/BEPS/LAI/ALL_LAI_GLASS&WHIT_1D_2000-2024_st341.rds")
+df_LAI = lst_LAI[st$site_old] %>% set_names(st$site) %>% melt_list("site")
+fwrite(df_LAI, "data-raw/BEPS/Forcing_LAI_Daily_BEPS_Forest_sp12_v20260506.csv", bom = TRUE)
