@@ -23,6 +23,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 
 ```{r}
 dir_root = "data-raw/ALL/ChinaFlux_EBF_海南儋州-橡胶林_2010-2018/"
+# code(dir_root)
 f_met = "{dir_root}/儋州橡胶林_Met_数据（30分钟）_2010_2018.csv" %>% glue()
 
 SITE = "海南儋州"
@@ -52,6 +53,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 
 ```{r}
 dir_root = "data-raw/ALL/EBF_金佛山_2020-2021/"
+# code(dir_root)
 f_met = "{dir_root}/金佛山-亚热带-EBF_Hour_Met_2020_2021.csv" %>% glue()
 
 SITE = "金佛山"
@@ -87,6 +89,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 
 ```{r}
 dir_root = "data-raw/ALL/ENF_呼中_北方林森林_2014-2018"
+# code(dir_root)
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "呼中"
 VegType = "ENF"
@@ -97,6 +100,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 > 燕山
 ```{r}
 f_met = "data-raw/ALL/燕山-山地丘陵区_2020-2021/燕山灌丛_Met_30min_2020_2021.csv" # 共用一个met
+# code(dirname(f_met))
 SITE = "燕山"
 
 VegType = "WSA"
@@ -131,6 +135,8 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, outdir = outdir)
 ```{r}
 # 温带原始针阔叶混交林
 dir_root = "data-raw/ALL/ChinaFlux_MF_长白山_阔叶红松林_2003-2010/"
+# code(dir_root)
+
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "长白山"
 VegType = "MF"
