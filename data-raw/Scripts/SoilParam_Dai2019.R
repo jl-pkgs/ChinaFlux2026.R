@@ -14,11 +14,12 @@ st <- data.table::fread("Z:/Researches/ET_ModelDev/data/st_flux341.csv") %>%
 sp = sf2::df2sf(st)
 # "frac_sand", "Ksat", "VGM_n", "VGM_α", "VGM_θres"  "θsat", "λ", "ψsat"
 
-files = dir("Z:/GitHub/GlobalHydroPub/Dai_GlobalSoil", "*.nc", full.names = TRUE)
+dir_root = "Z:/GitHub/GlobalHydroPub/Dai_GlobalSoil"
+# code(dir_root)
+files = dir(dir_root, "*.nc", full.names = TRUE)
 vars = str_extract(basename(files), "(?<=_).*(?=_)")
 
 lst_fs = split(files, vars)
-
 lst = foreach(fs = lst_fs, i = icount()) %do% {
   runningId(i)
   ra = rast(fs)
