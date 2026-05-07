@@ -43,8 +43,18 @@
 
 #Figure3("ENF_人工针叶林_千烟洲")
 #Figure3("ENF_北方林森林_呼中")
+#Figure3("MF_针阔混交_长白山")
+#Figure3("MF_针阔混交_鼎湖山")
+
+
+#pagebreak()
+
+= 2 丢弃部分
+
 #Figure3("ENF_人工针叶林_燕山")
 
 #Figure3("MF_乔灌混交林_燕山")
-#Figure3("MF_针阔混交_长白山")
-#Figure3("MF_针阔混交_鼎湖山")
+
+#box-red[
+  燕山观测质量不佳，这次先不采用。
+]

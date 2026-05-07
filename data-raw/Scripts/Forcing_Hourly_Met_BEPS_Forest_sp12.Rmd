@@ -17,6 +17,7 @@ tidy_unit <- function(d) {
 }
 ```
 
+# PART1
 ```{r}
 fs <- dir2("data-raw/Hourly/", "*.csv")
 sites <- str_site(fs)
@@ -56,20 +57,20 @@ write_json(lst_unit[inds], "data/Unit/ChinaFlux_Variable_Info_Forest_Hourly.json
 ```
 
 
-# 数据保存
+# PART2 数据保存
 
 ```{r}
 # %% 1. Met
 lst <- map(fs[inds], \(f) read_ufile(f, nrows = Inf))
-lst_unit <- map(lst, "unit")
-lst_data <- map(lst, "data")
+# lst_unit <- map(lst, "unit")
+# lst_data <- map(lst, "data")
 ```
 
 ```{r}
 lst2 <- map(lst, unify_unit_hourly)
-lst2_unit <- map(lst2, "unit")
-lst2_data <- map(lst2, "data")
-write_json(lst2_unit, "data/Unit/ChinaFlux_Variable_Info_Forest_Hourly.json", pretty = TRUE)
+lst_unit <- map(lst2, "unit")
+lst_data <- map(lst2, "data")
+write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_Forest_Hourly.json", pretty = TRUE)
 ```
 
 ```{r}
@@ -81,18 +82,18 @@ write_json(lst2_unit, "data/Unit/ChinaFlux_Variable_Info_Forest_Hourly.json", pr
 ```{r}
 vars_need <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
 
-res <- map(seq_along(lst2_data), function(i) {
-  site <- names(lst2_data)[i]
-  d <- lst2_data[[i]]
-  # u = lst_unit[[i]]
-  # vars = names(u)[u %in% vars_need]
-  d %>%
+res <- map(seq_along(lst_data), function(i) {
+  site <- names(lst_data)[i]
+  d <- lst_data[[i]] %>%
     add_time() %>%
     select_any(time, any_of(vars_need)) %>%
     mutate(site = site, .before = 1)
+  # 30min to hourly
+  d_hour = d[, c(lapply(.SD, \(x) mean(x, na.rm = TRUE)), .N), 
+    .(site, time = floor_date(time, "hour"))] %>% 
+    mutate(Prcp = Prcp * N) %>% select(-N) # Prcp是累积
 })
 df <- rbindlist(res)
-
 fwrite(df, "data-raw/BEPS/Forcing_Met_Hourly_BEPS_Forest_sp12.csv", bom = TRUE)
 ```
 
@@ -113,33 +114,39 @@ export_Soil <- function(lst_data) {
   vars_need <- c("Prcp", "Ta", "LE", "Hs")
   indexes <- seq_along(lst_data) %>% set_names(names(lst_data))
 
-  res <- map(indexes, function(i) {
+  map(indexes, function(i) {
     site <- names(lst_data)[i]
-    d <- lst_data[[i]]
-    # u = lst_unit[[i]]
-    # vars = names(u)[u %in% vars_need]
-    d <- d %>%
+    print(site)
+    d <- lst_data[[i]] %>%
       add_time() %>% 
       check_SM() %>% 
       select_any(time, any_of(vars_need), starts_with(c("SM", "TS", "G_"))) %>%
       select(-any_of(starts_with(c("TS_0", "TS_TCAV")))) %>%
       mutate(site = site, .before = 1)
-    fout <- glue("{outdir}/{site}_SM&TS_hourly.csv")
-    fwrite(d, fout, bom = TRUE)
-    print(fout)
+    
+    d_hour = d[, c(lapply(.SD, \(x) mean(x, na.rm = TRUE)), .N), 
+      .(site, time = floor_date(time, "hour"))] %>% 
+      mutate(Prcp = Prcp * N) %>% select(-N) # Prcp是累积
 
-    dat <- melt(d, c("site", "time"))
+    # fwrite(d, glue("{outdir}/{site}_SM&TS_30min.csv"), bom = TRUE)
+    fout = glue("{outdir}/{site}_SM&TS_hourly.csv")
+    fwrite(d_hour, fout, bom = TRUE)
+
+    # dat <- melt(d, c("site", "time"))
+    dat <- melt(d_hour, c("site", "time"))
     p <- ggplot(dat, aes(time, value)) +
       geom_line() +
       facet_wrap(~variable, scales = "free") +
       theme_bw()
-    # write_fig(p, gsub(".csv", ".pdf", fout), 14, 7, show = FALSE)
+    write_fig(p, gsub(".csv", ".pdf", fout), 14, 7, show = FALSE)
+    d_hour
   })
 }
 
-export_Soil(lst2_data)
-# data-raw/BEPS/SoilOBS
-# write_list2xlsx(res, "data-raw/BEPS/Forcing_SM&TS_Hourly_BEPS_Forest_sp12.xlsx")
+res = export_Soil(lst_data)
+# system.time({
+#   write_list2xlsx(res, "data-raw/BEPS/Forcing_SM&TS_Hourly_BEPS_Forest_sp12_V2.xlsx")
+# })
 ```
 
 
@@ -156,7 +163,6 @@ df_flux <- df[name %in% st$name, ] %>%
 fwrite(df_flux, "data-raw/BEPS/Forcing_Flux_Daily_BEPS_Forest_sp12.csv")
 
 # %% 3. lai
-st
 lst_LAI <- readRDS("data-raw/BEPS/LAI/ALL_LAI_GLASS&WHIT_1D_2000-2024_st341.rds")
 df_LAI <- lst_LAI[st$site_old] %>%
   set_names(st$site) %>%
