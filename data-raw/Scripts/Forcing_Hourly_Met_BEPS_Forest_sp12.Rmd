@@ -99,6 +99,15 @@ fwrite(df, "data-raw/BEPS/Forcing_Met_Hourly_BEPS_Forest_sp12.csv", bom = TRUE)
 ## 土壤 hourly
 
 ```{r}
+check_SM <- function(d) {
+  mutate(d, across(starts_with("SM"), \(x) {
+    x[x <= 0 | x > 1] <- NA_real_
+    x
+  }))
+}
+```
+
+```{r}
 export_Soil <- function(lst_data) {
   outdir <- "data-raw/BEPS/SoilOBS"
   vars_need <- c("Prcp", "Ta", "LE", "Hs")
@@ -109,13 +118,22 @@ export_Soil <- function(lst_data) {
     d <- lst_data[[i]]
     # u = lst_unit[[i]]
     # vars = names(u)[u %in% vars_need]
-    d %>%
-      add_time() %>%
+    d <- d %>%
+      add_time() %>% 
+      check_SM() %>% 
       select_any(time, any_of(vars_need), starts_with(c("SM", "TS", "G_"))) %>%
       select(-any_of(starts_with(c("TS_0", "TS_TCAV")))) %>%
       mutate(site = site, .before = 1)
     fout <- glue("{outdir}/{site}_SM&TS_hourly.csv")
     fwrite(d, fout, bom = TRUE)
+    print(fout)
+
+    dat <- melt(d, c("site", "time"))
+    p <- ggplot(dat, aes(time, value)) +
+      geom_line() +
+      facet_wrap(~variable, scales = "free") +
+      theme_bw()
+    # write_fig(p, gsub(".csv", ".pdf", fout), 14, 7, show = FALSE)
   })
 }
 
