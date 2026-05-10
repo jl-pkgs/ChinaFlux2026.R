@@ -125,6 +125,24 @@ fix_radiation <- function(l) {
   .fix(l, \(u) u %in% c("MJ m-2 d-1", "MW m-2 d-1"), MJ_2W, "W m-2")
 }
 
+fix_radiation_daily <- function(l) {
+  l <- fix_radiation(l)
+  # Daily LE/Hs metadata sometimes omits d-1, or writes MW where MJ is meant.
+  .fix(
+    l, \(u) u %in% c("MJ m-2", "MW m-2") &
+      (startsWith(names(u), "LE") | startsWith(names(u), "Hs")),
+    MJ_2W, "W m-2"
+  )
+}
+
+fix_ET_daily <- function(l) {
+  .fix(
+    l, \(u) u %in% c("kg H2O m-2 d-1", "kg H2O m-2 day-1") &
+      startsWith(names(u), "ET"),
+    identity, "mm d-1"
+  )
+}
+
 # ── 碳通量模块（日 / 小时分离）────────────────────────────────────────────────
 fix_carbon_daily <- function(l) {
   umol_units <- c(
@@ -135,8 +153,8 @@ fix_carbon_daily <- function(l) {
     "µmol CO2 m-2 s-1",
     "μmol CO2 m-2 s-1"
   )
-  l <- .fix(l, \(u) u == "gCO2 m-2 d-1", gCO2_2gC, "gC m-2 d-1")
   l %>%
+    .fix(\(u) u == "gCO2 m-2 d-1", gCO2_2gC, "gC m-2 d-1") %>%
     .fix(\(u) u %in% umol_units & !startsWith(names(u), "PAR"), umol_s_2gC_d, "gC m-2 d-1") %>%
     .fix(\(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1", "mgCO2 m-2 s-1"), mgCO2_2gC, "gC m-2 d-1")
 }
@@ -158,7 +176,8 @@ unify_unit_daily <- function(l) {
     fix_unit_notation() |>
     fix_GPP() |>
     fix_carbon_daily() |>
-    fix_radiation() |>
+    fix_radiation_daily() |>
+    fix_ET_daily() |>
     fix_temp_K() |>
     fix_SM_pct() |>
     fix_Pa()

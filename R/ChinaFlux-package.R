@@ -10,12 +10,12 @@ NULL
 
 add_time <- function(d) {
   # d <- d[, lapply(.SD, as.numeric)]
-  inds = match(c("year", "doy", "hour"), names(d)) %>% rm_empty()
-  use_yday = length(inds) == 3
+  inds <- match(c("year", "doy", "hour"), names(d)) %>% rm_empty()
+  use_yday <- length(inds) == 3
   if (use_yday) {
     d %>%
-    mutate(time = make_datetime(year, 1, 1, 0) + ddays(doy - 1) + dhours(hour), .before = "year") %>%
-    select(-year, -doy, -hour)
+      mutate(time = make_datetime(year, 1, 1, 0) + ddays(doy - 1) + dhours(hour), .before = "year") %>%
+      select(-year, -doy, -hour)
   } else {
     d %>%
       mutate(across(year:minute, as.numeric)) %>%
@@ -25,8 +25,13 @@ add_time <- function(d) {
 }
 
 add_date <- function(d) {
-  mutate(d, date = make_date(year, month, day), .before = "year") |>
-    select(-year, -month, -day)
+  if ("doy" %in% names(d)) {
+    mutate(d, date = make_date(year, 1, 1) + ddays(doy - 1), .before = "year") %>%
+      select(-year, -doy, -any_of(c("month", "day")))
+  } else {
+    mutate(d, date = make_date(year, month, day), .before = "year") |>
+      select(-year, -month, -day)
+  }
 }
 
 filter_date <- function(d, time_beg, time_end) {
