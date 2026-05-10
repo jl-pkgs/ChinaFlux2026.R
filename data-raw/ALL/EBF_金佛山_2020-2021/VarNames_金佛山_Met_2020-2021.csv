@@ -1,0 +1,3 @@
+﻿year,month,day,hour,minute,Ta_4m,RH_4m,WD_4m,WS_4m,Pa,Rs,Rn,PAR,Ta_24m,RH_24m,WD_24m,WS_24m,Ts_10cm,Ts_20cm,Ts_40cm,Ts_60cm,Ts_80cm,Ts_120cm,Ts_160cm,SM_10cm,SM_20cm,SM_40cm,SM_60cm,SM_80cm,SM_120cm,SM_160cm,Prcp
+,,,,,Deg C,%,Deg,m/s,hPa,W/m^2,W/m^2,μmol/m2/s,Deg C,%,Deg,m/s,Deg C,Deg C,Deg C,Deg C,Deg C,Deg C,Deg C,%,%,%,%,%,%,%,mm
+year,month,day,hour,minute,Ta,RH,WD,WS,Pa,Rs,Rn,PAR,Ta_canopy,RH_canopy,WD_canopy,WS_canopy,TS_10cm,TS_20cm,TS_40cm,TS_60cm,TS_80cm,TS_120cm,TS_160cm,SM_10cm,SM_20cm,SM_40cm,SM_60cm,SM_80cm,SM_120cm,SM_160cm,Prcp

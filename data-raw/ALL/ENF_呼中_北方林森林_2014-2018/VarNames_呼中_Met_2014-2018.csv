@@ -1,0 +1,4 @@
+﻿yyyy,mm,dd,HH,MM,Temp_34m_Avg,Temp_25m_Avg,Temp_15m_Avg,Temp_2m_Avg,RH_34m_Avg,RH_25m_Avg,RH_15m_Avg,RH_2m_Avg,Press_Avg,wnd_spd,wnd_dir_compass,DR_Avg,Rn_Avg,par_Avg,Ts_1_AVG,Ts_2_AVG,Ts_3_AVG,Ts_4_AVG,Ts_5_AVG,VWC_10cm_Avg,VWC_20cm_Avg,VWC_30cm_Avg,VWC_50cm_Avg,VWC_100cm_Avg,rain_Tot
+/,/,/,/,/,C,C,C,C,%,%,%,%,hpa,m/s,degrees,W/m^2,W/m^2,umol/s/m2,C,C,C,C,C,m^3 m^-3,m^3 m^-3,m^3 m^-3,m^3 m^-3,m^3 m^-3,mm
+year,month,day,hour,minute,Ta_34m,Ta_canopy,Ta_15m,Ta,RH_34m,RH_canopy,RH_15m,RH,Pa,WS_canopy,WD_canopy,Rs,Rn,PAR,TS_5cm,TS_10cm,TS_20cm,TS_50cm,TS_100cm,SM_10cm,SM_20cm,SM_30cm,SM_50cm,SM_100cm,Prcp
+# 林高15m，通量观测35m，冠层上方canopy区25m；风速在30m

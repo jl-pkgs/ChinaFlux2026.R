@@ -1,0 +1,4 @@
+﻿年,月,日,时,分,秒,近地面空气温度,冠层上方空气温度,近地面空气湿度,冠层上方空气湿度,近地面风速,冠层上方风速,风向,大气压,光合有效辐射,向下的短波辐射,向上的短波辐射,向下的长波辐射,向上的长波辐射,净辐射,一层土壤温度,二层土壤温度,一层土壤体积含水量,二层土壤体积含水量,三层土壤体积含水量,降水量
+/,/,/,/,/,/,℃,℃,%,%,m s-1,m s-1,Deg,kpa,μmol m-2 s-1,Wm-2,Wm-2,Wm-2,Wm-2,Wm-2,℃,℃,m3 m-3,m3 m-3,m3 m-3,mm
+year,month,day,hour,minute,second,Ta,Ta_canopy,RH,RH_canopy,WS,WS_canopy,WD,Pa,PAR,Rs,Rs_out,Rln_in,Rln_out,Rn,TS_5cm,TS_20cm,SM_10cm,SM_20cm,SM_50cm,Prcp
+/,/,/,/,/,/,℃,℃,%,%,m s-1,m s-1,Deg,kpa,μmol m-2 s-1,Wm-2,Wm-2,Wm-2,Wm-2,Wm-2,℃,℃,m3 m-3,m3 m-3,m3 m-3,mm

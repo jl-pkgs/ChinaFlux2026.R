@@ -1,0 +1,3 @@
+﻿year,doy,hour,Ta_1.5m,Ta_33m,RH_1.5m,RH_33m,Vaporp_1.5m,Vaporp_33m,WS_1.5m,WS_33m,WD,PAR,DR,NR,Ts_2cm,Ts_5cm,Ts_20cm,Ts_50cm,VWC_5cm,VWC_20cm,VWC_50cm,Pressure,Rain
+year,doy,hour,Ta,Ta_canopy,RH,RH_canopy,ea,ea_canopy,WS,WS_canopy,WD,PAR,Rs,Rn,TS_2cm,TS_5cm,TS_20cm,TS_50cm,SM_5cm,SM_20cm,SM_50cm,Pa,Prcp
+-,-,-,℃,℃,%,%,kPa,kPa,m·s-1,m·s-1,degree,umol·m-2·s-1,W·m-2,W·m-2,℃,℃,℃,℃,%,%,%,kPa,mm

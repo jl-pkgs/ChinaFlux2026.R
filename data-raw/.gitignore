@@ -1,4 +1,4 @@
-*.csv
+# *.csv
 *.xlsx
 *.xls
 *.pdf
@@ -6,3 +6,31 @@
 *.zip
 *.txt
 *.db
+
+*30min_Met*
+*Day_Met*
+*Hour_Met*
+*Met_30min*
+*Met_日*
+*Met_Day*
+
+*FluxMet*
+*Day_Flux*
+*Hour_Flux*
+*Flux_30min*
+*30min_Flux*
+*Flux_日*
+*Flux_Day*
+*统计数据*
+*分钟数据*
+*Flux_数据*
+*Met_数据*
+
+# *Flux*
+*水位*
+*通量*
+*SM&TS*
+
+BEPS/*/*/*.csv
+BEPS/*/*.csv
+BEPS/*.csv

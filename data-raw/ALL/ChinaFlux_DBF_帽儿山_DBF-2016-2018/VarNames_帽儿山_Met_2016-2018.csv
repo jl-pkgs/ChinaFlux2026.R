@@ -1,0 +1,3 @@
+﻿YYYY,MM00,DD00,HH00,MI00,SR,PAR,Ta,VPD,Ts0cm,Ts5cm,Ms10cm,Ms20cm,Ms30cm,Ms50cm,Rain
+/,/,/,/,/,W m-2,μmol m-2 s-1,℃,kPa,℃,℃,%,%,%,%,mm
+year,month,day,hour,minute,Rs,PAR,Ta,VPD,Ts_0cm,Ts_5cm,SM_10cm,SM_20cm,SM_30cm,SM_50cm,Prcp

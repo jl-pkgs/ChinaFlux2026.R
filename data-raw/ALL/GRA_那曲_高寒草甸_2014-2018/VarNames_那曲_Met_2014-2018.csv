@@ -1,0 +1,3 @@
+﻿year,month,day,hour,minute,冠层下方空气温度,冠层上方空气温度,冠层下方空气相对湿度,冠层上方空气相对湿度,冠层下方水汽压,冠层上方水汽压,冠层下方风速,冠层上方风速,风向,大气压,太阳辐射,净辐射,光合有效辐射,向下短波辐射,向下长波辐射,向上短波辐射,向上长波辐射,TS_10cm,SM_10cm,SM_20cm,Prcp
+/,/,/,/,/,℃,℃,%,%,kPa,kPa,m s-1,m s-1,Deg,kPa,W m-2,W m-2,µmol m-2 s-1,W m-2,W m-2,W m-2,W m-2,℃,m3 m-3,m3 m-3,mm
+year,month,day,hour,minute,Ta,Ta_canopy,RH,RH_canopy,ea,ea_canopy,WS,WS_canopy,WD,Pa,Q,Rn,PAR,Rs,Rln_in,Rs_out,Rln_out,TS_10cm,SM_10cm,SM_20cm,Prcp

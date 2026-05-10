@@ -1,0 +1,3 @@
+﻿年,月,日,时,分,降水量,光合有效辐射度,近地面空气相对湿度,冠层上方空气相对湿度,净辐射,一层土壤体积含水量,二层土壤体积含水量,三层土壤体积含水量,四层土壤体积含水量,五层土壤体积含水量,太阳短波辐射,近地面上方空气温度,冠层上方空气温度,一层土壤温度,二层土壤温度,三层土壤温度,四层土壤温度,五层土壤温度
+year,month,day,hour,minute,Prcp,PAR,RH,RH_canopy,Rn,SM_5cm,SM_10cm,SM_15cm,SM_20cm,SM_40cm,Rs,Ta,Ta_canopy,TS_5cm,TS_10cm,TS_15cm,TS_20cm,TS_40cm
+/,/,/,/,/,mm,umol m-2 s-1,%,%,W m-2,m3 m-3,m3 m-3,m3 m-3,m3 m-3,m3 m-3,W m-2,K,K,K,K,K,K,K

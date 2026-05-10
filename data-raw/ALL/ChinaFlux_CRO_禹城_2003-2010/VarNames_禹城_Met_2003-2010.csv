@@ -1,0 +1,3 @@
+﻿year,month,day,hour,minute,second,Ta,T_canopy,RH,RH_canopy,ea,ea_canopy,WS,WS_canopy,WD,Pa,Rs,Rn,PAR,TS_1,TS_2,TS_3,TS_4,TS_5,SM_1,SM_2,SM_3,Prcp
+/,/,/,/,/,/,℃,℃,%,%,kpa,kpa,m s-1,m s-1,Deg,kpa,W m-2,W m-2,μmol m-2 s-1,℃,℃,℃,℃,℃,m3 m-3,m3 m-3,m3 m-3,mm
+year,month,day,hour,minute,second,Ta,T_canopy,RH,RH_canopy,ea,ea_canopy,WS,WS_canopy,WD,Pa,Rs,Rn,PAR,TS_5cm,TS_10cm,TS_20cm,TS_30cm,TS_50cm,SM_5cm,SM_10cm,SM_20cm,Prcp

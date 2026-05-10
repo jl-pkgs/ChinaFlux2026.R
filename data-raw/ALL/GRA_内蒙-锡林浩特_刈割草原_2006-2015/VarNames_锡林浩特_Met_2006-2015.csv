@@ -1,0 +1,3 @@
+﻿year,month,day,hour,minute,SWin,SWout,LWin,LWout,Rn,G,PAR,Ta,RH,Rainfall,Ts,SWC,WS,WD,Ustar,PA
+,,,,,W m-2,W m-2,W m-2,W m-2,W m-2,W m-2,umol m-2 s-1,℃,%,mm,℃,m3 m-3,m s-1,°,m s-1,kPa
+year,month,day,hour,minute,Rs,Rs_out,Rln_in,Rln_out,Rn,G,PAR,Ta,RH,Prcp,Ts_10cm,SM_10cm,WS,WD,Ustar,Pa

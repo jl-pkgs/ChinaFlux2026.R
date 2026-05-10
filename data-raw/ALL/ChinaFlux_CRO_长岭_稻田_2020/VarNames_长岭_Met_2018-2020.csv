@@ -1,0 +1,3 @@
+﻿year,month,day,hour,minute,Ta,RH,ea,VPD,WS,WD,Pa,G,Rn,Rs,Rs_out,Rln_in,Rln_out,PAR,TS_1,TS_2,TS_3,SM_0_20cm_1,SM_0_20cm_2,Prcp
+/,/,/,/,/,℃,%,kpa,kpa,m s-1,Deg,kpa,W m-2,W m-2,W m-2,W m-2,W m-2,W m-2,μmol m-2 s-1,℃,℃,℃,m3 m-3,m3 m-3,mm
+year,month,day,hour,minute,Ta,RH,ea,VPD,WS,WD,Pa,G,Rn,Rs,Rs_out,Rln_in,Rln_out,PAR,TS_5cm,TS_10cm,TS_20cm,SM_0-20cm_1,SM_0-20cm_2,Prcp
