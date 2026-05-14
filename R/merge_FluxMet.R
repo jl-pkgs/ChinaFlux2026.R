@@ -64,9 +64,9 @@ merge_daily_FluxMet <- function(
   d_flux <- fread_glue(f_flux) %>%
     unique() %>%
     rm_useless_cols()
-
+  
   by <- intersect(names(d_flux), VARS_DATE)
-  d <- merge(d_flux, d_met, by)
+  d <- merge(d_flux, d_met, by, sort = FALSE)
   file <- glue(
     "{VegType}_{VegName}_{SITE}_Day_FluxMet_{year_beg}_{year_end}.csv"
   )
