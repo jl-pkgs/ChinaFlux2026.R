@@ -1,0 +1,3 @@
+﻿year,month,day,Ta,RH,Pa,WS,Rs,Rln_in,PAR,TS_1,TS_2,TS_3,TS_4,TS_5,Prcp
+/,/,/,K,%,hPa,m s-1,W m-2,W m-2,umol m-2,K,K,K,K,K,mm
+year,month,day,Ta,RH,Pa,WS,Rs,Rln_in,PAR,TS_10cm,TS_20cm,TS_30cm,TS_40cm,TS_50cm,Prcp

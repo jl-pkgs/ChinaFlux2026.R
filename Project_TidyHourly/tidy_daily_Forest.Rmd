@@ -13,7 +13,6 @@ find_met <- function(dir_root) {
   ans
 }
 
-pattern_met = "_Met_[日|(Day)]"
 ```
 
 ## CRO
@@ -348,3 +347,72 @@ VegName = "典型草原"
 merge_daily_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
+##
+
+1	达茂	SAV（荒漠草原）	2015-2018
+2	崇明东滩	WET（湿地）	2004-2010
+3	洞庭湖	WET（南荻）	2014-2016
+4	海北	WET（高寒湿地）	2004-2009
+5	盘锦	WET（芦苇湿地）	2018-2020
+6	普定	WSA（退耕还林）	2015-2019
+
+```{r}
+## 该站点不需要处理
+dir_root = "data-raw/ALL/SAV_荒漠草原_达茂_2015-2018/"
+f_met = find_met(dir_root)
+# SITE = "达茂"
+# VegType = "SAV"
+# VegName = "荒漠草原"
+# merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# 该站点不需要处理
+dir_root = "data-raw/ALL/WET_崇明东滩_湿地-2004-2010"
+f_met = find_met(dir_root)
+```
+
+```{r}
+dir_root = "data-raw/ALL/WET_洞庭湖-南荻_2014-2016/"
+f_met = find_met(dir_root)
+SITE = "洞庭湖"
+VegType = "WET"
+VegName = "南荻湿地"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+dir_root = "data-raw/ALL/WET_海北_高寒湿地-2004-2009/"
+f_met = glue("{dir_root}/海北湿地_Met_日_2003_2010.csv")
+
+SITE = "海北"
+VegType = "WET"
+VegName = "高寒湿地"
+f_flux = glue("{dir_root}/海北湿地_Flux_日_2004_2009.csv")
+merge_daily_FluxMet(f_met, SITE, VegType, VegName, f_flux = f_flux)
+```
+
+```{r}
+dir_root = "data-raw/ALL/WET_芦苇湿地_盘锦-2018-2020/"
+f_met = find_met(dir_root)
+
+SITE = "盘锦"
+VegType = "WET"
+VegName = "芦苇湿地"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+dir_root = "data-raw/ALL/普定-退耕还林_2015-2019/"
+f_met = find_met(dir_root)
+SITE = "普定"
+VegType = "WSA"
+VegName = "退耕还林"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+---
+
+- `句容`
+- `栾城`
+- `庆阳`
