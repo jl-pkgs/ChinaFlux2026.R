@@ -1,4 +1,4 @@
-﻿date,Ta,RH,ws,wd,Rs,Rs_out,Rln_in,Rln_out,Rn,PAR,TS1,TS2,SM1,SM2,SM3,SM4,SM5,Prcp,G1,G2,G3
--,K,%,m s-1,degree,W m-2,W m-2,W m-2,W m-2,W m-2,umol m-2,K,K,%,%,%,%,%,mm,W m-2,W m-2,W m-2
-date,Ta,RH,WS,WD,Rs,Rs_out,Rln_in,Rln_out,Rn,PAR,TS1,TS2,SM1,SM2,SM3,SM4,SM5,Prcp,G1,G2,G3
+﻿year,month,day,date,Ta,RH,ws,wd,Rs,Rs_out,Rln_in,Rln_out,Rn,PAR,TS1,TS2,SM1,SM2,SM3,SM4,SM5,Prcp,G1,G2,G3
+/,/,/,-,K,%,m s-1,degree,W m-2,W m-2,W m-2,W m-2,W m-2,umol m-2,K,K,%,%,%,%,%,mm,W m-2,W m-2,W m-2
+year,month,day,date,Ta,RH,WS,WD,Rs,Rs_out,Rln_in,Rln_out,Rn,PAR,TS1,TS2,SM1,SM2,SM3,SM4,SM5,Prcp,G1,G2,G3
 # 资料不详，不知TS1,TS2,SM1,SM2,SM3,SM4,SM5,Prcp,G1,G2,G3的深度

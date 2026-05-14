@@ -5,7 +5,11 @@ devtools::load_all(".")
 find_met <- function(dir_root) {
   fs = dir2(dir_root, "_Met.*.csv")
   ans = fs[grep("_(日|Day|day)", basename(fs))]
-  print(ans)
+  if (length(ans) == 0) {
+    print(dir(dir_root))
+  } else {
+    print(ans)
+  }
   ans
 }
 
@@ -15,7 +19,69 @@ pattern_met = "_Met_[日|(Day)]"
 ## CRO
 
 ```{r}
+dir_root = "data-raw/ALL/ChinaFlux_CRO_临泽_2012-2015/"
+f_met = find_met(dir_root)
+
+SITE <- "临泽"
+VegType <- "CRO"
+VegName <- "制种玉米"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
 ```
+
+```{r}
+# %% 2 固城
+dir_root = "data-raw/ALL/ChinaFlux_CRO_固城_冬小麦夏玉米_2020-2022/"
+f_met = find_met(dir_root)
+SITE <- "固城"
+VegType <- "CRO"
+VegName <- "冬小麦夏玉米"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 3 禹城
+dir_root = "data-raw/ALL/ChinaFlux_CRO_禹城_2003-2010/"
+f_met = find_met(dir_root)
+
+SITE <- "禹城"
+VegType <- "CRO"
+VegName <- "冬小麦夏玉米"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 4 CRO 盘锦 稻田
+dir_root = "data-raw/ALL/ChinaFlux_CRO_盘锦_稻田-2018-2020/"
+f_met = find_met(dir_root)
+
+SITE <- "盘锦"
+VegType <- "CRO"
+VegName <- "水稻"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 5 CRO 锦州 春玉米
+dir_root = "data-raw/ALL/ChinaFlux_CRO_锦州_2005-2014/"
+f_met = find_met(dir_root)
+
+SITE <- "锦州"
+VegType <- "CRO"
+VegName <- "春玉米"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% CRO 长岭 水稻（东北）
+dir_root = "data-raw/ALL/ChinaFlux_CRO_长岭_稻田_2020/"
+f_met = find_met(dir_root)
+
+SITE <- "长岭"
+VegType <- "CRO"
+VegName <- "水稻"
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
 
 ## EBF （5个站点）
 
@@ -282,4 +348,3 @@ VegName = "典型草原"
 merge_daily_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
-code(dir_root)

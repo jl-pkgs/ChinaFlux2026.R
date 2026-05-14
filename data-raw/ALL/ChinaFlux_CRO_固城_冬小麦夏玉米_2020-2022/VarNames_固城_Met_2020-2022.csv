@@ -1,3 +1,3 @@
-﻿year,month,day,hour,minute,T_probe_Avg,RH_probe_Avg,e_probe_Avg,PAR_density_Avg,albedo_Avg,R_SW_in_Avg,R_SW_out_Avg,R_LW_in_meas_Avg,R_LW_out_meas_Avg,Rn_raw_Avg,Precipitation_Tot,WS_Avg,WD_Avg,WD_StDev,G_N_Avg,G_S_Avg,Soil_T_N_Avg,Soil_T_S_Avg,Soil_VWC_N_Avg,Soil_VWC_S_Avg
+﻿year,month,day,hour,minute,Ta,RH,ea,PAR,albedo,Rs_in,Rs_out,Rln_in,Rln_out,Rn,Prcp,WS,WD,WD_StDev,G_N,G_S,Soil_T_N,Soil_T_S,Soil_VWC_N,Soil_VWC_S
 /,/,/,/,/,℃,%,kPa,µmol m-2 s-1,/,W m-2,W m-2,W m-2,W m-2,W m-2,mm,m s-1,°,°,W m-2,W m-2,℃,℃,%,%
-year,month,day,hour,minute,Ta,RH,e,PAR,albedo,Rs,Rs_out,Rln_in,Rln_out,Rn,Prcp,WS,WD_Avg,WD_StDev,G_8cm_N,G_8cm_S,TS_4cm_N,TS_4cm_S,SM_4cm_N,SM_4cm_S
+year,month,day,hour,minute,Ta,RH,ea,PAR,albedo,Rs,Rs_out,Rln_in,Rln_out,Rn,Prcp,WS,WD,WD_StDev,G_8cm_N,G_8cm_S,TS_4cm_N,TS_4cm_S,SM_4cm_N,SM_4cm_S
