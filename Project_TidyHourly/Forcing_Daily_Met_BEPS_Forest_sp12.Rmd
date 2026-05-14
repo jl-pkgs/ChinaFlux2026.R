@@ -10,9 +10,17 @@ str_site <- function(f) {
   str_extract(basename(f), ".*(?=_30min|_Day)")
 }
 
-check_ET <- function(d) {
+check_Flux <- function(d) {
   if ("ET" %!in% names(d)) {
     d %<>% mutate(ET = W2mm(LE, Ta), .after = Hs)
+  }
+
+  if ("GPP" %in% names(d)) {
+    .fix <- \(x) {
+      x[x > 100] <- NA_real_
+      x
+    }
+    d %<>% mutate(GPP = .fix(GPP))
   }
   d
 }
@@ -46,10 +54,10 @@ inds <- grep("EBF|ENF|MF|DBF", sites) %>% setdiff(inds_bad)
 
 # PART1
 ```{r}
-lst <- map(fs, \(f) read_ufile(f, nrows = 10))
-lst_unit <- map(lst, "unit")
+# lst <- map(fs, \(f) read_ufile(f, nrows = 10))
+# lst_unit <- map(lst, "unit")
+# write_json(lst_unit[inds], "data/Unit/ChinaFlux_Variable_Info_Forest_Daily.json", pretty = TRUE)
 
-write_json(lst_unit[inds], "data/Unit/ChinaFlux_Variable_Info_Forest_Daily.json", pretty = TRUE)
 # write_json(info, "./ChinaFlux_Variable_Info_Hourly.json", pretty = TRUE)
 # write_json(info[inds], "./ChinaFlux_Variable_Info_Forest_Hourly.json", pretty = TRUE)
 ```
@@ -76,26 +84,11 @@ vars = c("date", "NEE", "RE", "GPP", "ET", "Rn", "Rs", "LE", "Hs",
   "Ta", "Ta_canopy", "RH", "RH_canopy")
 
 data = map(lst_data, \(d) {
-  d %>% add_date %>% check_ET() %>% select(date, any_of(vars), starts_with(c("SM_", "TS_", "G_"))) %>%
+  d %>% add_date %>% check_Flux() %>% select(date, any_of(vars), starts_with(c("SM_", "TS_", "G_"))) %>%
     select(-any_of(starts_with(c("TS_0_", "TS_TCAV", "TS_105T"))))
 })
 
 sapply(data, names) %>% unlist() %>% table()
-```
-
-```{r}
-outdir = "data-raw/Daily/BEPS"
-res = foreach(d = data, SITE = names(data), i = icount()) %do% {
-  print(SITE)
-
-  d_lai = df_LAI[site == SITE, -1]
-  r = merge(d, d_lai, by = "date", all.x = TRUE) 
-  fout = glue("{outdir}/{SITE}_FluxLAISoil_Daily_v20260511.csv")
-  fwrite(r, fout, bom = TRUE)
-  
-  figure = gsub("csv", "pdf", fout)
-  plot_variables(r, figure, show = FALSE)
-}
 ```
 
 
@@ -113,50 +106,17 @@ df_LAI <- lst_LAI[st$site_old] %>%
 # fwrite(df_LAI, "data-raw/BEPS/Forcing_LAI_Daily_BEPS_Forest_sp12_v20260506.csv", bom = TRUE)
 ```
 
-## 合并Daily的多源数据
-
-> 站点存在错误
 ```{r}
-f = "Z:/st261/data-raw/ChinaFlux/ChinaFlux/data/Daily/EBF_西双版纳_热带雨林_Day_FluxMet_2003-2015.csv"
-df_FluxLAI <- merge(df_flux, df_LAI, by = c("site", "date"), all.x = TRUE)
-# df_LAI[, .(date_beg = min(date), date_end = max(date)), site]
-df_FluxLAI[, .(date_beg = min(date), date_end = max(date)), site] %>% arrange(site)
-```
+outdir = "data-raw/Daily/BEPS"
+res = foreach(d = data, SITE = names(data), i = icount()) %do% {
+  print(SITE)
 
-> 进一步合并SM&TS数据
-```{r}
-merge_soil <- function(SITE, ..., outdir = "data-raw/BEPS/Fluxes") {
-  indir <- "data-raw/BEPS/SoilOBS/daily"
-  file <- glue("{indir}/{SITE}_SM&TS_daily.csv")
-  d_Soil <- fread(file) %>%
-    select(-Prcp, -LE, -Hs) %>%
-    arrange(time) %>%
-    mutate(date = as_date(time), .after = "time") %>%
-    select(-time)
+  d_lai = df_LAI[site == SITE, -1]
+  r = merge(d, d_lai, by = "date", all.x = TRUE) 
+  fout = glue("{outdir}/{SITE}_FluxLAISoil_Daily_v20260511.csv")
+  fwrite(r, fout, bom = TRUE)
 
-  d <- merge(df_FluxLAI, d_Soil, by = c("site", "date"))
-  if (SITE == "ENF_人工针叶林_千烟洲") {
-    # 数据处理过程中，错误把[MW m-2 d-1]当做了[W m-2]来处理。
-    factor_MW_to_W <- 1e+06 / 86400 # [MW m-2 d-1] -> [W m-2]
-    d %<>% mutate(
-      GPP = -GPP,
-      ET = ET * factor_MW_to_W,
-      LE = LE * factor_MW_to_W,
-      Hs = Hs * factor_MW_to_W
-    )
-  }
-
-  fout <- glue("{outdir}/{SITE}_FluxLAISoil_daily_v20260510.csv")
-  fwrite(d, fout, bom = TRUE)
-
-  figure <- gsub("csv", "pdf", fout)
-  plot_variables(d, figure, show = FALSE)
+  figure = gsub("csv", "pdf", fout)
+  plot_variables(r, figure, show = FALSE)
 }
-
-SITES <- sites[inds]
-for (SITE in SITES) {
-  merge_soil(SITE)
-}
-# SITE = SITES[8]
-# fwrite("data-raw/BEPS/Forcing_FluxLAI_Soil_Daily_BEPS_Forest_sp12_v20260507.csv", bom = TRUE)
 ```
