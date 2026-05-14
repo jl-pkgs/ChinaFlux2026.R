@@ -8,7 +8,7 @@ VARS_DATE = c(
 
 #' @export
 merge_hourly_FluxMet <- function(f_met, SITE, VegType, VegName, ..., 
-  outdir = "data-raw/0_Hourly", f_flux = NULL) 
+  outdir = "data-raw/Hourly", f_flux = NULL) 
 {
   dir_root = dirname(f_met)
   f_flux = f_flux %||% gsub("Met", "Flux", f_met)
