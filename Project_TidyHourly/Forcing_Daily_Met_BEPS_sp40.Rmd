@@ -1,0 +1,123 @@
+```{r}
+pacman::p_load(
+  Ipaper, data.table, dplyr, lubridate,
+  jsonlite, stringr,
+  hydroTools,
+  ggplot2, gg.layers, patchwork
+)
+
+str_site <- function(f) {
+  str_extract(basename(f), ".*(?=_30min|_Day)")
+}
+
+check_Flux <- function(d) {
+  if ("ET" %!in% names(d)) {
+    d %<>% mutate(ET = W2mm(LE, Ta), .after = Hs)
+  }
+
+  if ("GPP" %in% names(d)) {
+    .fix <- \(x) {
+      x[x > 100] <- NA_real_
+      x
+    }
+    d %<>% mutate(GPP = .fix(GPP))
+  }
+  d
+}
+
+tidy_unit <- function(d) {
+  data.table(
+    name = names(d), name_new = NA_character_,
+    unit = unlist(d), unit_new = NA_character_, comment = ""
+  )
+}
+
+plot_variables <- function(d, fout, ..., show = FALSE) {
+  vars_common <- intersect(names(d), c("site", "name", "time", "date"))
+  dat <- melt(d, vars_common)
+
+  p <- ggplot(dat, aes(date, value)) +
+    geom_line() +
+    facet_wrap(~variable, scales = "free") +
+    theme_bw()
+  write_fig(p, fout, 14, 7, show = show)
+}
+
+fs <- dir2("data-raw/Daily/", "*.csv")
+sites <- str_site(fs)
+names(fs) <- sites
+
+# sites_bad <- c("DBF_温带落叶阔叶林_帽儿山", "EBF_亚热带常绿阔叶林_哀牢山")
+# inds_bad <- match(sites_bad, sites)
+# inds <- grep("EBF|ENF|MF|DBF", sites) %>% setdiff(inds_bad)
+```
+
+# PART1
+```{r}
+lst <- map(fs, \(f) read_ufile(f, nrows = 10))
+lst_unit <- map(lst, "unit")
+
+write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_ALL_Daily.json", pretty = TRUE)
+
+# write_json(info, "./ChinaFlux_Variable_Info_Hourly.json", pretty = TRUE)
+# write_json(info[inds], "./ChinaFlux_Variable_Info_Forest_Hourly.json", pretty = TRUE)
+```
+
+> 检查变量是否齐全
+
+# PART2 数据保存
+
+```{r}
+# %% 1. Met
+lst <- map(fs[inds], \(f) read_ufile(f, nrows = Inf))
+
+lst2 <- map(lst, unify_unit_daily)
+lst_unit <- map(lst2, "unit")
+lst_data <- map(lst2, "data")
+
+write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_Forest_Daily.json", pretty = TRUE)
+```
+
+## 整理数据
+
+```{r}
+vars = c("date", "NEE", "RE", "GPP", "ET", "Rn", "Rs", "LE", "Hs", 
+  "Ta", "Ta_canopy", "RH", "RH_canopy")
+
+data = map(lst_data, \(d) {
+  d %>% add_date %>% check_Flux() %>% select(date, any_of(vars), starts_with(c("SM_", "TS_", "G_"))) %>%
+    select(-any_of(starts_with(c("TS_0_", "TS_TCAV", "TS_105T"))))
+})
+
+sapply(data, names) %>% unlist() %>% table()
+```
+
+
+## 每个站点要融入LAI数据
+
+```{r}
+st_full <- fread("data/st_flux39_names.csv")
+st <- st_full[site %in% names(lst_data)]
+
+# %% 3. lai
+lst_LAI <- readRDS("data-raw/BEPS/LAI/ALL_LAI_GLASS&WHIT_1D_2000-2024_st341.rds")
+df_LAI <- lst_LAI[st$site_old] %>%
+  set_names(st$site) %>%
+  melt_list("site")
+# fwrite(df_LAI, "data-raw/BEPS/Forcing_LAI_Daily_BEPS_Forest_sp12_v20260506.csv", bom = TRUE)
+```
+
+```{r}
+outdir = "data-raw/Daily/BEPS"
+res = foreach(d = data, SITE = names(data), i = icount()) %do% {
+  print(SITE)
+
+  d_lai = df_LAI[site == SITE, -1]
+  r = merge(d, d_lai, by = "date", all.x = TRUE) 
+  fout = glue("{outdir}/{SITE}_FluxLAISoil_Daily_v20260511.csv")
+  fwrite(r, fout, bom = TRUE)
+
+  figure = gsub("csv", "pdf", fout)
+  plot_variables(r, figure, show = FALSE)
+}
+```
