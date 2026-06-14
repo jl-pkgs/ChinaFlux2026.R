@@ -7,19 +7,27 @@
 ## usethis namespace: end
 NULL
 
+# 字符 datetime 解析：优先 ymd_hm（如句容 "2015/1/1 0:00"），失败的再用
+# ymd_hms 兜底（如临泽 ISO "2012-01-01T00:00:00Z"）。非字符则原样返回。
+.parse_time <- function(x) {
+  if (!is.character(x)) {
+    return(x)
+  }
+  t <- suppressWarnings(ymd_hm(x))
+  if (anyNA(t)) t <- suppressWarnings(ymd_hms(x))
+  t
+}
 
 add_time <- function(d) {
   # d <- d[, lapply(.SD, as.numeric)]
-  # 部分站点（如句容、临泽）直接提供 time 列：若为字符则解析为 datetime。
-  # 优先按 ymd_hm（如 "2015/1/1 0:00"）解析，失败的再用 ymd_hms 兜底
-  # （如临泽 ISO 格式 "2012-01-01T00:00:00Z"）。
+  # 部分站点直接提供 time 列（句容、临泽）。
   if ("time" %in% names(d)) {
-    if (is.character(d$time)) {
-      t <- suppressWarnings(ymd_hm(d$time))
-      if (anyNA(t)) t <- suppressWarnings(ymd_hms(d$time))
-      d <- mutate(d, time = t)
-    }
-    return(d)
+    return(mutate(d, time = .parse_time(time)))
+  }
+  # 部分站点（如盘锦）把半小时 datetime 放在名为 date 的列里：若含时分（字符或
+  # POSIXct）则当作 time，重命名后返回。
+  if ("date" %in% names(d) && (is.character(d$date) || inherits(d$date, "POSIXt"))) {
+    return(mutate(d, time = .parse_time(date), .before = 1) %>% select(-date))
   }
   inds <- match(c("year", "doy", "hour"), names(d)) %>% rm_empty()
   use_yday <- length(inds) == 3

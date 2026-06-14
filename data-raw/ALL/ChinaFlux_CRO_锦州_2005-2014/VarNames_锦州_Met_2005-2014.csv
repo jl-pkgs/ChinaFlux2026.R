@@ -1,4 +1,4 @@
 ﻿year,month,day,doy,hour,minute,Ta_1,Ta_2,RH_1,RH_2,Pvapor_1,Pvapor_2,WS_4m,WS_6m,WD_D1_WVT,WD_SD1_WVT,Rs,Rs_out,Rln_in,Rln_out,Rn,PAR,G_1_8cm,G_2_8cm,Ts_TCAV_surf,SM,Tsoil_5cm,Tsoil_10cm,Tsoil_15cm,Tsoil_20cm,Tsoil_40cm,Tsoil_80cm,Prcp,SM_10cm,SM_20cm,SM_30cm,SM_40cm
--,-,-,-,-,-,℃,℃,%,%,kPa,kPa,m s-1,m s-1,°,°,W m-2,W m-2,W m-2,W m-2,W m-2,umol m-2 s-1,W m-2,W m-2,℃,m3 m-3,℃,℃,℃,℃,℃,℃,mm,m3 m-3,m3 m-3,m3 m-3,m3 m-3
+-,-,-,-,-,-,℃,℃,%,%,kPa,kPa,m s-1,m s-1,°,°,W m-2,W m-2,W m-2,W m-2,W m-2,umol m-2 s-1,W m-2,W m-2,℃,m3 m-3,℃,℃,℃,℃,℃,℃,mm,%,%,%,%
 year,month,day,doy,hour,minute,Ta,Ta_canopy,RH,RH_canopy,ea,ea_canopy,WS,WS_canopy,WD_D1_WVT,WD_SD1_WVT,Rs,Rs_out,Rln_in,Rln_out,Rn,PAR,G_8cm_1,G_8cm_2,Ts_TCAV_surf,SM,TS_5cm,TS_10cm,TS_15cm,TS_20cm,TS_40cm,TS_80cm,Prcp,SM_10cm,SM_20cm,SM_30cm,SM_40cm
 # met: 4m, 6m

@@ -9,7 +9,7 @@ title: "BEPS 小时强迫数据制作（全部站点）"
 > 1. 删除森林 `grep("EBF|ENF|MF|DBF")` 过滤，默认处理所有站点（仅排除 `sites_bad`）。
 > 2. **冠层变量回退**：部分草地/农田站缺 `Ta_canopy/RH_canopy/WS_canopy`，
 >    用 `coalesce_canopy()` 回退到塔层基础 `Ta/RH/WS`，保证强迫非全 NA。
-> 3. 输出统一改名 `_ALL_`，版本号 `v20260610`。
+> 3. 输出统一改名 `_ALL_`，版本号 `v20260614`。
 >
 > **依赖提醒**：`Flux hourly`、`lai` 两节依赖 `data/st_flux39_names.csv` 的 `site`
 > 列。当前该列只填了森林站点，非森林站点为空 —— 这两节只会处理已映射的站点，
@@ -54,10 +54,12 @@ coalesce_canopy <- function(d) {
   for (cv in names(fallback)) {
     bv <- fallback[[cv]]
     if (!bv %in% names(d)) next
+    # 强制转 numeric：某些站基础列全 NA 会被读成 logical，
+    # 与 numeric 的 *_canopy 列直接 fcoalesce 会报「type logical vs double」
     if (cv %in% names(d)) {
-      d[[cv]] <- data.table::fcoalesce(d[[cv]], d[[bv]])
+      d[[cv]] <- data.table::fcoalesce(as.numeric(d[[cv]]), as.numeric(d[[bv]]))
     } else {
-      d[[cv]] <- d[[bv]]
+      d[[cv]] <- as.numeric(d[[bv]])
     }
   }
   d
@@ -118,26 +120,31 @@ write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_ALL_Hourly.json", pretty
 ```{r}
 vars_need <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
 
-res <- map(seq_along(lst_data), function(i) {
+res <- map(1:length(lst_data), function(i) {
   site <- names(lst_data)[i]
   fprintf("[%d] %s\n", i, site)
 
-  d <- lst_data[[i]] %>%
-    coalesce_canopy() %>% # 冠层缺测 → 回退基础 Ta/RH/WS
-    add_time() %>%
-    select_any(time, any_of(vars_need)) %>%
-    mutate(site = site, .before = 1)
-  # 30min → hourly
-  d_hour <- d[
-    , c(lapply(.SD, \(x) mean(x, na.rm = TRUE)), .N),
-    .(site, time = floor_date(time, "hour"))
-  ] %>%
-    mutate(Prcp = Prcp * N) %>%
-    select(-N) # Prcp 是累积量
+  tryCatch({
+    d <- lst_data[[i]] %>%
+      coalesce_canopy() %>% # 冠层缺测 → 回退基础 Ta/RH/WS
+      add_time() %>%
+      select_any(time, any_of(vars_need)) %>%
+      mutate(site = site, .before = 1)
 
-  d_hour[is.na(Prcp), Prcp := 0.0]
-  d_hour <- d_hour %>% mutate(across(-c(site, time, Prcp, Rln_in), \(x) na_interp(time, x)))
-  arrange(d_hour, time)
+    # 30min → hourly
+    d_hour <- d[
+      , c(lapply(.SD, \(x) mean(x, na.rm = TRUE)), .N),
+      .(site, time = floor_date(time, "hour"))
+    ] %>%
+      mutate(Prcp = Prcp * N) %>%
+      select(-N) # Prcp 是累积量
+
+    d_hour[is.na(Prcp), Prcp := 0.0]
+    d_hour <- d_hour %>% mutate(across(-c(site, time, Prcp, Rln_in), \(x) na_interp(time, x)))
+    arrange(d_hour, time)
+  }, error = function(e) {
+    message(sprintf("[e, %d] %s", i, e$message))
+  })
 })
 
 df <- rbindlist(res)
@@ -154,8 +161,10 @@ export_Soil <- function(lst_data) {
 
   map(indexes, function(i) {
     site <- names(lst_data)[i]
-    print(site)
-    d <- lst_data[[i]] %>% add_time() %>%
+    fprintf("[%d] %s \n", i, site)
+
+    d <- lst_data[[i]] %>%
+      add_time() %>%
       check_bounds_SM() %>%
       select_any(time, any_of(vars_need), starts_with(c("SM", "TS", "G_"))) %>%
       select(-any_of(starts_with(c("TS_0_", "TS_TCAV")))) %>%
@@ -188,6 +197,18 @@ export_Soil <- function(lst_data) {
 res <- export_Soil(lst_data)
 ```
 
+## summary
+
+```{r}
+map(seq_along(lst_data), function(i) {
+  site <- names(lst_data)[i]
+  fprintf("[%d] %s \n", i, site)
+  d <- lst_data[[i]] %>%
+    select_any(starts_with(c("SM")))
+  summary(d)
+})
+```
+
 ## Flux hourly（依赖 st 映射，详见文首提醒）
 
 ```{r}
@@ -197,26 +218,28 @@ st <- st_full[site %in% names(lst_data)] # 仅 site 列已映射的站点
 
 sites_unmapped <- setdiff(names(lst_data), st$site)
 if (length(sites_unmapped)) {
-  message("[Flux/LAI 跳过] 未在 st_flux39_names.csv 映射 site 列：\n  ",
-    paste(sites_unmapped, collapse = "\n  "))
+  message(
+    "[Flux/LAI 跳过] 未在 st_flux39_names.csv 映射 site 列：\n  ",
+    paste(sites_unmapped, collapse = "\n  ")
+  )
 }
 
 df_flux <- df[name %in% st$name, ] %>%
   mutate(site = factor(name, st$name, st$site))
-fwrite(df_flux, "data-raw/BEPS/Forcing_Flux_Daily_BEPS_ALL_v20260610.csv")
+fwrite(df_flux, "data-raw/BEPS/Forcing_Flux_Daily_BEPS_ALL_v20260614.csv")
 
 # %% 3. lai
 lst_LAI <- readRDS("data-raw/BEPS/LAI/ALL_LAI_GLASS&WHIT_1D_2000-2024_st341.rds")
 df_LAI <- lst_LAI[st$site_old] %>%
   set_names(st$site) %>%
   melt_list("site")
-fwrite(df_LAI, "data-raw/BEPS/Forcing_LAI_Daily_BEPS_ALL_v20260610.csv", bom = TRUE)
+fwrite(df_LAI, "data-raw/BEPS/Forcing_LAI_Daily_BEPS_ALL_v20260614.csv", bom = TRUE)
 ```
 
 ## 合并 Daily 多源数据
 
 ```{r}
-df_LAI <- fread("data-raw/BEPS/Forcing_LAI_Daily_BEPS_ALL_v20260610.csv")
+df_LAI <- fread("data-raw/BEPS/Forcing_LAI_Daily_BEPS_ALL_v20260614.csv")
 ```
 
 > 个别站点 FluxMet 原始有误，单独重读修正（示例：西双版纳热带雨林）
@@ -234,7 +257,7 @@ d <- read_ufile(f)$data %>%
     SM1 = SM_1
   )]
 
-df_flux <- fread("data-raw/BEPS/Forcing_Flux_Daily_BEPS_ALL_v20260610.csv") %>%
+df_flux <- fread("data-raw/BEPS/Forcing_Flux_Daily_BEPS_ALL_v20260614.csv") %>%
   .[site %!in% sites_bad_flux] %>%
   rbind(d, fill = TRUE)
 
@@ -271,7 +294,7 @@ merge_soil <- function(SITE, ..., outdir = "data-raw/BEPS/Fluxes") {
     )
   }
 
-  fout <- glue("{outdir}/{SITE}_FluxLAISoil_daily_v20260610.csv")
+  fout <- glue("{outdir}/{SITE}_FluxLAISoil_daily_v20260614.csv")
   fwrite(d, fout, bom = TRUE)
 
   figure <- gsub("csv", "pdf", fout)
