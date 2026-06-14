@@ -10,6 +10,17 @@ NULL
 
 add_time <- function(d) {
   # d <- d[, lapply(.SD, as.numeric)]
+  # 部分站点（如句容、临泽）直接提供 time 列：若为字符则解析为 datetime。
+  # 优先按 ymd_hm（如 "2015/1/1 0:00"）解析，失败的再用 ymd_hms 兜底
+  # （如临泽 ISO 格式 "2012-01-01T00:00:00Z"）。
+  if ("time" %in% names(d)) {
+    if (is.character(d$time)) {
+      t <- suppressWarnings(ymd_hm(d$time))
+      if (anyNA(t)) t <- suppressWarnings(ymd_hms(d$time))
+      d <- mutate(d, time = t)
+    }
+    return(d)
+  }
   inds <- match(c("year", "doy", "hour"), names(d)) %>% rm_empty()
   use_yday <- length(inds) == 3
   if (use_yday) {

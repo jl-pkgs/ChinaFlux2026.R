@@ -47,6 +47,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 
 # %% 5 CRO 锦州 春玉米
 f_met = "data-raw/ALL/ChinaFlux_CRO_锦州_2005-2014/锦州_Met_30min_2005_2014.csv"
+code(dirname(f_met))
 SITE <- "锦州"
 VegType <- "CRO"
 VegName <- "春玉米"

@@ -171,7 +171,9 @@ fix_carbon_hourly <- function(l) {
 
 # ── 组合函数 ──────────────────────────────────────────────────────────────────
 unify_unit_daily <- function(l) {
-  l$data %<>% mutate(across(where(is.character), as.numeric))
+  # time/date 列保持字符，交由 add_time()/add_date() 解析为 datetime；
+  # 其余字符列才转数值（否则 time 会被 as.numeric 变成 NA）
+  l$data %<>% mutate(across(where(is.character) & !any_of(c("time", "date")), as.numeric))
   l |>
     fix_unit_notation() |>
     fix_GPP() |>
@@ -184,7 +186,9 @@ unify_unit_daily <- function(l) {
 }
 
 unify_unit_hourly <- function(l) {
-  l$data %<>% mutate(across(where(is.character), as.numeric))
+  # time/date 列保持字符，交由 add_time() 解析为 datetime；
+  # 其余字符列才转数值（否则 time 会被 as.numeric 变成 NA）
+  l$data %<>% mutate(across(where(is.character) & !any_of(c("time", "date")), as.numeric))
   l |>
     fix_unit_notation() |>
     fix_GPP() |>
