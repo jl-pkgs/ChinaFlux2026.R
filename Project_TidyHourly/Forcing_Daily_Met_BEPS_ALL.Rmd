@@ -1,6 +1,6 @@
 ```{r}
 pacman::p_load(
-  Ipaper, data.table, dplyr, lubridate,
+  Ipaper, data.table, dplyr, purrr, lubridate,
   jsonlite, stringr,
   hydroTools,
   ggplot2, gg.layers, patchwork
@@ -12,7 +12,9 @@ str_site <- function(f) {
 
 check_Flux <- function(d) {
   if ("ET" %!in% names(d)) {
-    d %<>% mutate(ET = W2mm(LE, Ta), .after = Hs)
+    if ("LE" %in% names(d)) {
+      d %<>% mutate(ET = W2mm(LE, Ta), .after = LE)
+    }
   }
 
   if ("GPP" %in% names(d)) {
@@ -52,7 +54,7 @@ names(fs) <- sites
 # inds <- grep("EBF|ENF|MF|DBF", sites) %>% setdiff(inds_bad)
 ```
 
-# PART1
+# 1 PART1
 ```{r}
 lst <- map(fs, \(f) read_ufile(f, nrows = 10))
 lst_unit <- map(lst, "unit")
@@ -65,7 +67,7 @@ write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_ALL_Daily.json", pretty 
 
 > 检查变量是否齐全
 
-# PART2 数据保存
+# 2 PART2 数据保存
 
 ```{r}
 # %% 1. Met
@@ -78,22 +80,78 @@ lst_data <- map(lst2, "data")
 write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_ALL_Daily.json", pretty = TRUE)
 ```
 
-## 整理数据
+## 2.1 整理数据
 
 ```{r}
 vars = c("date", "NEE", "RE", "GPP", "ET", "Rn", "Rs", "LE", "Hs", 
-  "Ta", "Ta_canopy", "RH", "RH_canopy")
+  "Ta", "Ta_canopy", "RH", "RH_canopy", "WS", "WS_canopy", "Prcp")
 
 data = map(lst_data, \(d) {
-  d %>% add_date %>% check_Flux() %>% select(date, any_of(vars), starts_with(c("SM_", "TS_", "G_"))) %>%
+  d %>% add_date %>% check_Flux() %>% pick_layer1("SM", to = "SM_1") %>%
+    select(date, any_of(vars), any_of("SM_1"), starts_with(c("TS_", "G_"))) %>%
     select(-any_of(starts_with(c("TS_0_", "TS_TCAV", "TS_105T"))))
 })
 
 sapply(data, names) %>% unlist() %>% table()
 ```
 
+# 3 OUTPUT
 
-## 每个站点要融入LAI数据
+> 多层/多探头土壤变量的处理缘由
+
+逐站把多层、多探头的土壤观测压成单列，供模型驱动。**SM 与 G 采用不同策略**，
+原因是二者的"多列"性质不同：
+
+- **SM → `pick_layer1("SM")` 取最浅层（不平均）**。土壤湿度的多列多为*不同深度*，
+  且同深度的重复探头质量参差，不能一律平均。典型对照：
+  - **长岭** `SM_0_20_1` / `SM_0_20_2`：r=0.996、均值 0.554 vs 0.550，两线几乎重合
+    ——是同层(0–20cm)真重复；
+  - **固城** `SM_4cm_N` / `SM_4cm_S`：r≈0、均值 0.18 vs 0.52，S 长期处于 0.52–0.65
+    近饱和，对华北旱作农田明显失真，判为**故障探头**。
+
+  若像 G 那样盲目平均，固城会被坏探头拖偏。`pick_layer1` 取"最浅且列序靠前"的一层，
+  恰好：固城选到合理的 `SM_4cm_N`（自动避开故障 S），长岭选到 `SM_0_20_1`（≈`_2`）。
+  裸 `SM`（多层平均）深度记为 `Inf` 排最后，仅当无任何分层时才采用（如句容）。
+
+- **G → `avg_layer("G")` 取行中位数 + 值域控制**。土壤热通量的多列基本是*同一深度的
+  多块热通量板(HFP)*（如锦州 `G_8cm_1/2`、固城 `G_8cm_N/S`、盘锦 `G_1/2/3`，r 普遍
+  0.7–0.97、均值接近），布设多块本就是为降低空间异质性，应**合成**。用中位数而非均值
+  以抗单板坏值；并对单板施加 `|G|>100→NA` 值域控制（盘锦 2020 下半年仅剩单板、出现
+  ±300~400 的坏值段，中位数无法剔除，靠值域控制清除）。
+  > 注：盘锦原始 `Gs_1/2/3`（源自 `G1/G2/G3`）经判断为同一深度重复板，已在
+  > `fix_flux_names` 统一改名为 `G_1/2/3` 后纳入合成。
+
+## 3.1 FluxMet
+```{r}
+vars = c("date", "NEE", "RE", "GPP", "ET", "Rn", "Rs", "LE", "Hs", 
+  "Ta", "Ta_canopy", "RH", "RH_canopy", "WS", "WS_canopy", "Prcp")
+
+data <- map(lst_data, \(d) {
+  d %>%
+    add_date() %>%
+    check_Flux() %>%
+    pick_layer1("SM", to = "SM_1") %>%
+    avg_layer("G") %>% # 多块土壤热通量板取行中位数 → 单列 G
+    select(date, any_of(vars), any_of("SM_1"), any_of("G")) %>%
+    select(-any_of(starts_with(c("TS_0_", "TS_TCAV", "TS_105T"))))
+})
+sapply(data, names) %>% unlist() %>% table()
+```
+
+
+## 3.2 记录 SM_1 / G 的来源变量
+
+```{r}
+# SM_1 ← 每站选中的最浅层 SM；G ← 每站参与中位数合成的全部热通量板
+prov_SM <- map(lst_data, \(d) ChinaFlux:::layer1_var(d, "SM")) %>% keep(~ length(.x) > 0)
+prov_G <- map(lst_data, \(d) ChinaFlux:::layer_vars(d, "G")) %>% keep(~ length(.x) > 0)
+
+write_json(prov_SM, "data/Unit/ChinaFlux_Convert_SM_1_Daily.json", pretty = TRUE)
+write_json(prov_G, "data/Unit/ChinaFlux_Convert_G_Daily.json", pretty = TRUE)
+```
+
+
+## 3.3 每个站点要融入LAI数据
 
 ```{r}
 st_full <- fread("data/st_flux39_names.csv")
@@ -104,20 +162,20 @@ lst_LAI <- readRDS("data-raw/BEPS/LAI/ALL_LAI_GLASS&WHIT_1D_2000-2024_st341.rds"
 df_LAI <- lst_LAI[st$site_old] %>%
   set_names(st$site) %>%
   melt_list("site")
+
+dat <- rbindlist(data, idcol = "site", fill = TRUE) %>% 
+  merge(df_LAI, by = c("site", "date"), all.x = TRUE)
+fwrite(dat, "data-raw/Forcing_Daily_Flux_sp40_v20260615.csv", bom = TRUE)
+
 # fwrite(df_LAI, "data-raw/BEPS/Forcing_LAI_Daily_BEPS_Forest_sp12_v20260506.csv", bom = TRUE)
 ```
 
 ```{r}
-outdir = "data-raw/Daily/BEPS"
-res = foreach(d = data, SITE = names(data), i = icount()) %do% {
-  print(SITE)
-
-  d_lai = df_LAI[site == SITE, -1]
-  r = merge(d, d_lai, by = "date", all.x = TRUE) 
-  fout = glue("{outdir}/{SITE}_FluxLAISoil_Daily_v20260511.csv")
-  fwrite(r, fout, bom = TRUE)
-
-  figure = gsub("csv", "pdf", fout)
-  plot_variables(r, figure, show = FALSE)
-}
+# outdir = "data-raw/Daily/BEPS"
+# res = foreach(d = data, SITE = names(data), i = icount()) %do% {
+#   print(SITE)
+#   fout = glue("{outdir}/{SITE}_FluxLAISoil_Daily_v20260511.csv")
+#   figure = gsub("csv", "pdf", fout)
+#   plot_variables(r, figure, show = FALSE)
+# }
 ```

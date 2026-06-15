@@ -44,6 +44,12 @@ add_time <- function(d) {
 }
 
 add_date <- function(d) {
+  # 部分站点（庆阳、栾城、临泽、普定）直接提供 date 列（字符，如
+  # "2019-01-01" 或 "2012/1/1"），无 year/month/day：解析为 Date 后返回。
+  if ("date" %in% names(d)) {
+    if (is.character(d$date)) d <- mutate(d, date = ymd(date))
+    return(d)
+  }
   if ("doy" %in% names(d)) {
     mutate(d, date = make_date(year, 1, 1) + ddays(doy - 1), .before = "year") %>%
       select(-year, -doy, -any_of(c("month", "day")))

@@ -1,19 +1,24 @@
 # data-raw/ALL
 graphify-out
 images
+*.png
+
 # *.json
-*.xlsx
 # *.pdf
 
-# *.txt
-# data/*.csv
 TEMP
 
 *.html
 backup
 
-*.rds
-*.rda
 dev
 *.typ
 .agents
+
+## DATA
+*.rds
+*.rda
+*.csv
+*.xlsx
+# *.txt
+# data/*.csv

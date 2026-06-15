@@ -59,6 +59,35 @@ fix_GPP <- function(l) {
   l
 }
 
+fix_soilT_names <- function(l) {
+  # 土壤温度统一为 TS_**cm：把小写前缀 Ts_ 改成大写 TS_
+  # （Ts_5cm→TS_5cm；Ts_TCAV/Ts_0_1 等非标准深度也随之大写，由下游 select 统一剔除）。
+  # 无深度信息的 Ts/Ts1/Ts2/TS 因无法确定 **cm，不在此处理（见站点说明）。
+  names(l$data) <- sub("^Ts_", "TS_", names(l$data))
+  names(l$unit) <- sub("^Ts_", "TS_", names(l$unit))
+  l
+}
+
+fix_flux_names <- function(l) {
+  # 统一通量变量名：显热 H→Hs；生态系统呼吸 Reco/ER→RE。
+  # 仅当目标名尚不存在时改名，避免覆盖已有列。
+  .rn <- function(l, from, to) {
+    if (from %in% names(l$data) && !(to %in% names(l$data))) {
+      names(l$data)[match(from, names(l$data))] <- to
+      names(l$unit)[match(from, names(l$unit))] <- to
+    }
+    l
+  }
+  l <- .rn(l, "H", "Hs")
+  l <- .rn(l, "Reco", "RE")
+  l <- .rn(l, "ER", "RE")
+  # 地热通量板 Gs_1/2/3（盘锦水稻，源自原始 G1/G2/G3，经判断为同一深度的重复板）
+  # 统一为 G_1/2/3，便于 avg_layer("G") 自动捕获合成。
+  names(l$data) <- sub("^Gs_", "G_", names(l$data))
+  names(l$unit) <- sub("^Gs_", "G_", names(l$unit))
+  l
+}
+
 fix_SM_pct <- function(l) {
   # [data]: [%] → [m3 m-3]
   .fix(l, \(u) u == "%" & startsWith(names(u), "SM"), pct2m3m3, "m3 m-3")
@@ -190,6 +219,8 @@ unify_unit_daily <- function(l) {
   l$data %<>% mutate(across(where(is.character) & !any_of(c("time", "date")), as.numeric))
   l |>
     fix_unit_notation() |>
+    fix_soilT_names() |>
+    fix_flux_names() |>
     fix_GPP() |>
     fix_carbon_daily() |>
     fix_PAR_daily() |>
@@ -206,6 +237,8 @@ unify_unit_hourly <- function(l) {
   l$data %<>% mutate(across(where(is.character) & !any_of(c("time", "date")), as.numeric))
   l |>
     fix_unit_notation() |>
+    fix_soilT_names() |>
+    fix_flux_names() |>
     fix_GPP() |>
     fix_carbon_hourly() |>
     fix_radiation() |>
