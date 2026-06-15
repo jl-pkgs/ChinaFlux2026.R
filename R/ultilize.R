@@ -73,3 +73,15 @@ select_any <- function(dt, ...) {
   }
   select(dt, all_of(vars))
 }
+
+
+find_met_day <- function(dir_root) {
+  fs <- dir2(dir_root, "_Met.*.csv")
+  ans <- fs[grep("_(日|Day|day)", basename(fs))]
+  if (length(ans) == 0) {
+    print(dir(dir_root))
+  } else {
+    print(ans)
+  }
+  ans
+}
