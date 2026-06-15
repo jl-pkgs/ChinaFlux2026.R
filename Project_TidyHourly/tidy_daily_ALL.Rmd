@@ -339,6 +339,7 @@ merge_daily_FluxMet(f_met, SITE, VegType, VegName)
 ```{r}
 dir_root = "data-raw/ALL/GRA_内蒙-多伦_2006-2015"
 f_met = find_met(dir_root)
+# code(dir_root)
 
 SITE = "多伦"
 VegType = "GRA"

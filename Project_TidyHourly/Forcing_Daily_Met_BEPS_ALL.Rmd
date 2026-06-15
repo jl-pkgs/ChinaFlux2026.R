@@ -69,13 +69,13 @@ write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_ALL_Daily.json", pretty 
 
 ```{r}
 # %% 1. Met
-lst <- map(fs[inds], \(f) read_ufile(f, nrows = Inf))
+lst <- map(fs, \(f) read_ufile(f, nrows = Inf))
 
 lst2 <- map(lst, unify_unit_daily)
 lst_unit <- map(lst2, "unit")
 lst_data <- map(lst2, "data")
 
-write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_Forest_Daily.json", pretty = TRUE)
+write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_ALL_Daily.json", pretty = TRUE)
 ```
 
 ## 整理数据

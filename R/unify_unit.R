@@ -87,11 +87,11 @@ fix_unit_notation <- function(l) {
     "g m-2 s-1" = c("g·m-2·s-1", "g/m-2s-1", "gm-2s-1", "g H2O m-2 s-1"),
     "gC m-2 d-1" = "g C m-2 d-1",
     "μmol m-2 s-1" = \(u) {
-      u %in% c("μmol/m2/s", "umol/s/m2", "umol/(m^2 s)", "umol·m-2·s-1", "umol m-2 s-1", "umol m-2", "µmol m-2 s-1") &
+      u %in% c("μmol/m2/s", "umol/m2/s", "umol/s/m2", "umol/(m^2 s)", "umol·m-2·s-1", "umol m-2 s-1", "umol m-2", "µmol m-2 s-1") &
         (startsWith(names(u), "PAR") | startsWith(names(u), "PPFD"))
     },
     "Deg" = \(u) {
-      u %in% c("degree", "degrees", "°") & startsWith(names(u), "WD")
+      u %in% c("degree", "degrees", "°", "-") & startsWith(names(u), "WD")
     },
     "µmol CO2 m-2 s-1" = \(u) {
       u %in% c(
@@ -112,7 +112,7 @@ fix_unit_notation <- function(l) {
           startsWith(names(u), "T_canopy") |
           startsWith(names(u), "TS_") |
           startsWith(names(u), "Ts_") |
-          names(u) == "TS" |
+          names(u) %in% c("TS", "T", "Ts") |
           startsWith(names(u), "IRCT"))
     }
   )
@@ -127,17 +127,30 @@ fix_radiation <- function(l) {
 
 fix_radiation_daily <- function(l) {
   l <- fix_radiation(l)
-  # Daily LE/Hs metadata sometimes omits d-1, or writes MW where MJ is meant.
+  # Daily LE/H(s) metadata sometimes omits d-1, or writes MW where MJ is meant.
+  # `H` 前缀同时覆盖 H / Hs / Hs_raw（盘锦、长岭的显热标成 MW m-2）。
   .fix(
     l, \(u) u %in% c("MJ m-2", "MW m-2") &
-      (startsWith(names(u), "LE") | startsWith(names(u), "Hs")),
+      (startsWith(names(u), "LE") | startsWith(names(u), "H")),
     MJ_2W, "W m-2"
   )
 }
 
+fix_PAR_daily <- function(l) {
+  # 日尺度 PAR 偶尔以「日积分」存储，统一换算为日均速率 μmol m-2 s-1：
+  #   句容  mol m-2 (d-1)  → ×1e6/86400
+  #   若尔盖 umol m-2 d-1  → /86400
+  # 崇明东滩 PAR 误标为碳通量单位 gC m-2 d-1，但数值本身已是 μmol m-2 s-1，仅改标签。
+  is_par <- \(u) startsWith(names(u), "PAR") | startsWith(names(u), "PPFD")
+  l <- .fix(l, \(u) u == "mol m-2" & is_par(u), \(x) x * 1e6 / 86400, "μmol m-2 s-1")
+  l <- .fix(l, \(u) u == "umol m-2 d-1" & is_par(u), \(x) x / 86400, "μmol m-2 s-1")
+  .fix(l, \(u) u == "gC m-2 d-1" & is_par(u), identity, "μmol m-2 s-1")
+}
+
 fix_ET_daily <- function(l) {
+  # 日尺度 ET 统一为 mm d-1（kg H2O m-2 d-1 与 mm 数值等价，仅改标签）。
   .fix(
-    l, \(u) u %in% c("kg H2O m-2 d-1", "kg H2O m-2 day-1") &
+    l, \(u) u %in% c("kg H2O m-2 d-1", "kg H2O m-2 day-1", "mm") &
       startsWith(names(u), "ET"),
     identity, "mm d-1"
   )
@@ -150,11 +163,12 @@ fix_carbon_daily <- function(l) {
     "umolm-2s-1",
     "umol·m-2·s-1",
     "umol/s/m2",
+    "umol/m2 s",
     "µmol CO2 m-2 s-1",
     "μmol CO2 m-2 s-1"
   )
   l %>%
-    .fix(\(u) u == "gCO2 m-2 d-1", gCO2_2gC, "gC m-2 d-1") %>%
+    .fix(\(u) u %in% c("gCO2 m-2 d-1", "g CO2 m-2 d-1"), gCO2_2gC, "gC m-2 d-1") %>%
     .fix(\(u) u %in% umol_units & !startsWith(names(u), "PAR"), umol_s_2gC_d, "gC m-2 d-1") %>%
     .fix(\(u) u %in% c("mg CO2 m-2 s-1", "mg.CO2.m-2.s-1", "mgCO2 m-2 s-1"), mgCO2_2gC, "gC m-2 d-1")
 }
@@ -178,6 +192,7 @@ unify_unit_daily <- function(l) {
     fix_unit_notation() |>
     fix_GPP() |>
     fix_carbon_daily() |>
+    fix_PAR_daily() |>
     fix_radiation_daily() |>
     fix_ET_daily() |>
     fix_temp_K() |>
