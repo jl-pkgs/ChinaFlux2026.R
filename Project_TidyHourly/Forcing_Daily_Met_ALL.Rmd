@@ -5,11 +5,9 @@ pacman::p_load(
   hydroTools,
   ggplot2, gg.layers, patchwork
 )
-
 devtools::load_all(".")
-str_site <- function(f) {
-  str_extract(basename(f), ".*(?=_30min|_Day)")
-}
+
+str_site <- \(f) str_extract(basename(f), ".*(?=_30min|_Day)")
 
 check_Flux <- function(d) {
   if ("ET" %!in% names(d)) {
@@ -157,8 +155,14 @@ fwrite(dat, "data-raw/Forcing_Daily_Flux_sp40_v20260615.csv", bom = TRUE)
 版本2：逐站点的结果保存
 ```{r}
 outdir <- "data-raw/Daily_FluxALL"
+sites_bad = c(
+  "CRO_冬小麦夏玉米_固城", 
+  "CRO_春玉米_锦州", 
+  "GRA_人工垂穗披碱草_三江源", 
+  "WSA_高寒灌丛_海北") # ! 只跑bads
 
 res <- foreach(d = lst_data, SITE = names(lst_data), i = icount()) %do% {
+  # if (SITE %!in% sites_bad) return()
   runningId(i)
 
   d2 = d %>%
@@ -174,11 +178,11 @@ res <- foreach(d = lst_data, SITE = names(lst_data), i = icount()) %do% {
   fwrite(d2, fout, bom = TRUE)
 
   figure <- gsub(".csv", ".pdf", fout)
-  plot_variables(d2, figure, show = FALSE)
-}
+  print(figure)
 
-r = map(res, names)
-write_json(r, "variable_info.json", pretty = TRUE)
+  plot_variables(d2, figure, show = FALSE)
+  d2
+}
 ```
 
 

@@ -20,6 +20,7 @@ merge_daily_FluxMet(f_met, SITE, VegType, VegName)
 # %% 2 固城
 dir_root = "data-raw/ALL/ChinaFlux_CRO_固城_冬小麦夏玉米_2020-2022/"
 f_met = find_met_day(dir_root)
+
 SITE <- "固城"
 VegType <- "CRO"
 VegName <- "冬小麦夏玉米"

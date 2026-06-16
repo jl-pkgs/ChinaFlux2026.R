@@ -89,8 +89,19 @@ fix_flux_names <- function(l) {
 }
 
 fix_SM_pct <- function(l) {
-  # [data]: [%] → [m3 m-3]
-  .fix(l, \(u) u == "%" & startsWith(names(u), "SM"), pct2m3m3, "m3 m-3")
+  # [%] → [m3 m-3]，但仅当数值确为百分数时才 ÷100。
+  # 95% 分位 > 1.5 视为百分数（m3 m-3 物理上 < 1）→ ÷100；否则仅改标签。
+  unit <- unlist(l$unit)
+  cand <- names(unit)[unit == "%" & startsWith(names(unit), "SM")]
+  for (v in cand) {
+    x <- l$data[[v]]
+    if (!is.numeric(x)) next
+    if (quantile(x, 0.95, na.rm = TRUE) > 1.5) {
+      l$data[[v]] <- pct2m3m3(x)
+    }
+    l$unit[[v]] <- "m3 m-3"
+  }
+  l
 }
 
 # hPa → kPa
