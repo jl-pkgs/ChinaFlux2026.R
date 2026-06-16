@@ -18,7 +18,7 @@ dev
 ## DATA
 *.rds
 *.rda
-*.csv
+# *.csv
 *.xlsx
 # *.txt
 # data/*.csv

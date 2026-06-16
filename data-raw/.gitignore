@@ -7,16 +7,21 @@
 *.txt
 *.db
 
-Daily/BEPS
+# Daily/BEPS
 *30min_Met*
 *Day_Met*
 *Hour_Met*
 *Met_30min*
 *Met_日*
 *Met_Day*
+*FluxALL*
+*FluxLai*
+*Forcing*
+*report*
+
 
 *FluxMet*
-# *Day_Flux*
+*Day_Flux*
 *Hour_Flux*
 *Flux_30min*
 *30min_Flux*
