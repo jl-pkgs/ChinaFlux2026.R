@@ -22,3 +22,5 @@ dev
 *.xlsx
 # *.txt
 # data/*.csv
+
+*debug*

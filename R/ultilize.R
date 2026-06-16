@@ -85,3 +85,22 @@ find_met_day <- function(dir_root) {
   }
   ans
 }
+
+# 冠层变量回退：缺 *_canopy 时用塔层基础观测填补
+# - 同时存在：用基础值补冠层的 NA 空缺（fcoalesce）
+# - 仅有基础：直接复制为 *_canopy
+coalesce_canopy <- function(d) {
+  fallback <- c(Ta_canopy = "Ta", RH_canopy = "RH", WS_canopy = "WS")
+  for (cv in names(fallback)) {
+    bv <- fallback[[cv]]
+    if (!bv %in% names(d)) next
+    # 强制转 numeric：某些站基础列全 NA 会被读成 logical，
+    # 与 numeric 的 *_canopy 列直接 fcoalesce 会报「type logical vs double」
+    if (cv %in% names(d)) {
+      d[[cv]] <- data.table::fcoalesce(as.numeric(d[[cv]]), as.numeric(d[[bv]]))
+    } else {
+      d[[cv]] <- as.numeric(d[[bv]])
+    }
+  }
+  d
+}

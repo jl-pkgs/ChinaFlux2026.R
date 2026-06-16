@@ -46,25 +46,6 @@ plot_variables <- function(d, fout, ..., show = FALSE) {
   write_fig(p, fout, 14, 7, show = show)
 }
 
-# 冠层变量回退：缺 *_canopy 时用塔层基础观测填补
-# - 同时存在：用基础值补冠层的 NA 空缺（fcoalesce）
-# - 仅有基础：直接复制为 *_canopy
-coalesce_canopy <- function(d) {
-  fallback <- c(Ta_canopy = "Ta", RH_canopy = "RH", WS_canopy = "WS")
-  for (cv in names(fallback)) {
-    bv <- fallback[[cv]]
-    if (!bv %in% names(d)) next
-    # 强制转 numeric：某些站基础列全 NA 会被读成 logical，
-    # 与 numeric 的 *_canopy 列直接 fcoalesce 会报「type logical vs double」
-    if (cv %in% names(d)) {
-      d[[cv]] <- data.table::fcoalesce(as.numeric(d[[cv]]), as.numeric(d[[bv]]))
-    } else {
-      d[[cv]] <- as.numeric(d[[bv]])
-    }
-  }
-  d
-}
-
 fs <- dir2("data-raw/Hourly/", "*.csv")
 sites <- str_site(fs)
 names(fs) <- sites
@@ -97,8 +78,8 @@ r <- melt_list(res, "site")
 fwrite(r, "data/Unit/ChinaFlux_Variable_Info_ALL_Hourly.csv", bom = TRUE)
 
 # 6 个核心气象变量的覆盖情况
-vars_need <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
-res <- lst_unit[inds] %>% map(\(d) select(d, any_of(vars_need)))
+vars_met <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
+res <- lst_unit[inds] %>% map(\(d) select(d, any_of(vars_met)))
 sapply(res, ncol) %>% table()
 ```
 
@@ -118,7 +99,7 @@ write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_ALL_Hourly.json", pretty
 ## Met hourly
 
 ```{r}
-vars_need <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
+vars_met <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
 
 res <- map(1:length(lst_data), function(i) {
   site <- names(lst_data)[i]
@@ -128,7 +109,7 @@ res <- map(1:length(lst_data), function(i) {
     d <- lst_data[[i]] %>%
       coalesce_canopy() %>% # 冠层缺测 → 回退基础 Ta/RH/WS
       add_time() %>%
-      select_any(time, any_of(vars_need)) %>%
+      select_any(time, any_of(vars_met)) %>%
       mutate(site = site, .before = 1)
 
     # 30min → hourly
