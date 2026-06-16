@@ -64,6 +64,21 @@ check_bounds <- function(d, bounds = VARS_BOUNDS) {
   d
 }
 
+#' RH/SM 质量控制：恰为 0 的观测置 NA
+#'
+#' 相对湿度 RH 或土壤含水量 SM 读数恰好为 0，多为传感器故障/缺测哨兵，
+#' 而非真实观测，统一置 NA。按列名前缀匹配（RH/RH_canopy…，SM/SM_5cm/SM_L1…）。
+check_zero <- function(d, prefix = c("RH", "SM")) {
+  for (col in names(d)) {
+    x <- d[[col]]
+    if (is.numeric(x) && any(startsWith(col, prefix))) {
+      x[x == 0] <- NA_real_
+      d[[col]] <- x
+    }
+  }
+  d
+}
+
 check_bounds_SM <- function(d) {
   mutate(d, across(starts_with("SM"), \(x) {
     x[x <= 0 | x > 1] <- NA_real_
