@@ -1,0 +1,503 @@
+```{r}
+# %%
+pacman::p_load(Ipaper, data.table, dplyr, lubridate, stringr, zeallot)
+devtools::load_all(".")
+
+# 每个站点一个 cell：先半小时(merge_hourly_FluxMet)，再日尺度(merge_daily_FluxMet)。
+# - 半小时 f_met：能用 `dir2(dir_root, "_Met_30min")` 自动定位的就自动定位，
+#   命名不规范的(如 _Hour_Met_ / _30min_Met / 中文括号)用 glue 显式给出。
+# - 日尺度 f_met：优先 `find_met_day(dir_root)`，多日文件并存的(如海北湿地)显式给出。
+```
+
+## 1 CRO
+
+```{r}
+# %% 1 临泽
+dir_root <- "data-raw/ALL/CRO_制种玉米_临泽_2012-2015/"
+SITE <- "临泽"
+VegType <- "CRO"
+VegName <- "制种玉米"
+
+f_met <- glue("{dir_root}/临泽_30min_Met_2012_2015.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+# l$data[SM_10cm == 0, SM_10cm := NA_real_] %>% invisible()
+# l$data[TS_10cm > 100, TS_10cm := NA_real_] %>% invisible()
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 2 固城
+# l2$data[albedo > 100, albedo := albedo / 1000] %>% invisible()
+dir_root <- "data-raw/ALL/CRO_冬小麦夏玉米_固城_2020-2022/"
+SITE <- "固城"
+VegType <- "CRO"
+VegName <- "冬小麦夏玉米"
+
+f_met <- glue("{dir_root}/固城_Met_30min_2020_2022.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 3 禹城
+dir_root <- "data-raw/ALL/CRO_冬小麦夏玉米_禹城_2003-2010/"
+SITE <- "禹城"
+VegType <- "CRO"
+VegName <- "冬小麦夏玉米"
+
+f_met <- glue("{dir_root}/禹城_Met_30min_2003_2010.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 4 盘锦 稻田
+dir_root <- "data-raw/ALL/CRO_水稻_盘锦-2018-2020/"
+SITE <- "盘锦"
+VegType <- "CRO"
+VegName <- "水稻"
+
+f_met <- glue("{dir_root}/盘锦-稻田站_Met_30min_2018-2020.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 5 锦州 春玉米
+dir_root <- "data-raw/ALL/CRO_春玉米_锦州_2005-2014/"
+SITE <- "锦州"
+VegType <- "CRO"
+VegName <- "春玉米"
+
+f_met <- glue("{dir_root}/锦州_Met_30min_2005_2014.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 6 长岭 水稻（东北）
+dir_root <- "data-raw/ALL/CRO_水稻_长岭_2018-2020/"
+SITE <- "长岭"
+VegType <- "CRO"
+VegName <- "水稻"
+
+f_met <- glue("{dir_root}/长岭_水稻_Met_30min_2018-2020.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+## 2 EBF
+```{r}
+# %% 哀牢山
+dir_root <- "data-raw/ALL/EBF_常绿阔叶_哀牢山_EBF-2009-2013/"
+SITE <- "哀牢山"
+VegType <- "EBF"
+VegName <- "亚热带常绿阔叶林"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 海南儋州 橡胶林
+dir_root <- "data-raw/ALL/EBF_橡胶林_海南儋州_2010-2018/"
+SITE <- "海南儋州"
+VegType <- "EBF"
+VegName <- "橡胶林"
+
+f_met <- glue("{dir_root}/儋州橡胶林_Met_数据（30分钟）_2010_2018.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- glue("{dir_root}/儋州橡胶林_Met_数据_Day_2010_2018.csv")
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+有蚊子是不是？# %% 西双版纳 橡胶林
+dir_root <- "data-raw/ALL/EBF_橡胶林_西双版纳_2010-2014/"
+SITE <- "西双版纳"
+VegType <- "EBF"
+VegName <- "橡胶林"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+
+# %% 西双版纳 热带雨林
+dir_root <- "data-raw/ALL/EBF_热带雨林_西双版纳_2003-2015/"
+SITE <- "西双版纳"
+VegType <- "EBF"
+VegName <- "热带雨林"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 金佛山
+dir_root <- "data-raw/ALL/EBF_常绿阔叶_金佛山_2020-2021/"
+SITE <- "金佛山"
+VegType <- "EBF"
+VegName <- "亚热带常绿阔叶林"
+
+f_met <- glue("{dir_root}/金佛山-亚热带-EBF_Hour_Met_2020_2021.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+## 3 DBF 
+```{r}
+# %% 帽儿山
+dir_root <- "data-raw/ALL/DBF_落叶阔叶_帽儿山_DBF-2016-2018/"
+SITE <- "帽儿山"
+VegType <- "DBF"
+VegName <- "温带落叶阔叶林"
+
+f_met <- glue("{dir_root}/帽儿山站_DBF_Met_30min数据_2016_2018.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 宝天曼 天然栎林
+dir_root <- "data-raw/ALL/DBF_天然栎林_宝天曼_2017-2018/"
+SITE <- "宝天曼"
+VegType <- "DBF"
+VegName <- "天然栎林"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 小浪底 栓皮栎人工林
+dir_root <- "data-raw/ALL/DBF_栓皮栎人工林_小浪底_2016-2017/"
+SITE <- "小浪底"
+VegType <- "DBF"
+VegName <- "栓皮栎人工林"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+## 4 ENF
+```{r}
+# %% 千烟洲 人工针叶林
+dir_root <- "data-raw/ALL/ENF_人工针叶林_千烟洲_2003-2010/"
+SITE <- "千烟洲"
+VegType <- "ENF"
+VegName <- "人工针叶林"
+
+f_met <- glue("{dir_root}/千烟洲_Met_30min_2003_2015.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- glue("{dir_root}/千烟洲_Met_Day_2003-2015.csv")
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 呼中 北方林森林
+dir_root <- "data-raw/ALL/ENF_北方林森林_呼中_2014-2018"
+SITE <- "呼中"
+VegType <- "ENF"
+VegName <- "北方林森林"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+## 燕山（一个 Met 对应三种林型 Flux）===========================================
+# %% 燕山
+dir_root <- "data-raw/ALL/燕山-山地丘陵区_2020-2021"
+SITE <- "燕山"
+f_met_h <- glue("{dir_root}/燕山灌丛_Met_30min_2020_2021.csv") # 共用一个met
+f_met_d <- glue("{dir_root}/燕山灌丛_Met_日_2020_2021.csv")
+
+VegType <- "WSA"
+VegName <- "灌丛" # 山地灌丛, 荆条 + 扁担杆; z_canopy = 1.7
+merge_hourly_FluxMet(f_met_h, SITE, VegType, VegName,
+  f_flux = glue("{dir_root}/燕山灌丛_Flux_30min_2020_2021.csv")) # z_tower = 30m
+merge_daily_FluxMet(f_met_d, SITE, VegType, VegName,
+  f_flux = glue("{dir_root}/燕山灌丛_Flux_日_2020_2021.csv"))
+
+VegType <- "MF"
+VegName <- "乔灌混交林" # 油松 + 荆条; z_canopy = 1.7 ~ 11
+merge_hourly_FluxMet(f_met_h, SITE, VegType, VegName,
+  f_flux = glue("{dir_root}/燕山乔灌混交林_Flux_30min_2020_2021.csv")) # z_tower = 15m
+merge_daily_FluxMet(f_met_d, SITE, VegType, VegName,
+  f_flux = glue("{dir_root}/燕山乔灌混交林_Flux_日_2020_2021.csv"))
+
+VegType <- "ENF"
+VegName <- "人工针叶林" # 油松 + 侧柏; z_canopy = 8 ~ 11
+merge_hourly_FluxMet(f_met_h, SITE, VegType, VegName,
+  f_flux = glue("{dir_root}/燕山人工针叶林_Flux_30min_2020_2021.csv")) # z_tower = 20m
+merge_daily_FluxMet(f_met_d, SITE, VegType, VegName,
+  f_flux = glue("{dir_root}/燕山人工针叶林_Flux_日_2020_2021.csv"))
+```
+
+## 5 MF
+```{r}
+# %% 鼎湖山 针阔混交
+dir_root <- "data-raw/ALL/MF_针阔叶混交_鼎湖山_2003-2010/"
+SITE <- "鼎湖山"
+VegType <- "MF"
+VegName <- "针阔混交"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 长白山 针阔混交（温带原始针阔叶混交林）
+dir_root <- "data-raw/ALL/MF_阔叶红松林_长白山_2003-2010/"
+SITE <- "长白山"
+VegType <- "MF"
+VegName <- "针阔混交"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+## 6 GRA
+```{r}
+# %% 当雄 高寒草甸
+dir_root <- "data-raw/ALL/GRA_高寒草甸_当雄_2004-2010/"
+SITE <- "当雄"
+VegType <- "GRA"
+VegName <- "高寒草甸"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 海北 高寒草甸
+dir_root <- "data-raw/ALL/GRA_高寒草甸_海北_2015-2020/"
+SITE <- "海北"
+VegType <- "GRA"
+VegName <- "高寒草甸"
+
+f_met <- dir2(dir_root, "_Met_30min")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 锡林浩特 刈割草原
+dir_root <- "data-raw/ALL/GRA_刈割草原_锡林浩特_2006-2015/"
+SITE <- "锡林浩特"
+VegType <- "GRA"
+VegName <- "刈割草原"
+
+f_met <- glue("{dir_root}/锡林浩特_Hour_Met_2006-2015.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 锡林浩特 典型草原
+dir_root <- "data-raw/ALL/GRA_典型草原_锡林浩特_2003-2010年/"
+SITE <- "锡林浩特"
+VegType <- "GRA"
+VegName <- "典型草原"
+
+f_met <- glue("{dir_root}/内蒙古_Met_30min_2003_2010.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 三江源 人工垂穗披碱草
+dir_root <- "data-raw/ALL/GRA_垂穗披碱草_三江源_2012-2016/"
+SITE <- "三江源"
+VegType <- "GRA"
+VegName <- "人工垂穗披碱草"
+
+f_met <- glue("{dir_root}/三江源垂穗披-碱草人工草地_Met_30min_2012_2016.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 若尔盖 高寒草甸
+dir_root <- "data-raw/ALL/GRA_高寒草甸_若尔盖_2015-2020"
+SITE <- "若尔盖"
+VegType <- "GRA"
+VegName <- "高寒草甸"
+
+f_met <- dir2(dir_root, "_Met_30min.*.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 那曲 高寒草甸
+dir_root <- "data-raw/ALL/GRA_高寒草甸_那曲_2014-2018"
+SITE <- "那曲"
+VegType <- "GRA"
+VegName <- "高寒草甸"
+
+f_met <- glue("{dir_root}/GRA_那曲_高寒草甸_2014-2018_30min_Met.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 元江 稀树草原（干热河谷）
+dir_root <- "data-raw/ALL/GRA_稀树草原_元江_2013-2015"
+SITE <- "元江"
+VegType <- "GRA"
+VegName <- "稀树草原"
+
+f_met <- glue("{dir_root}/元江站_Met_30min_2013_2015.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 多伦 典型草原
+dir_root <- "data-raw/ALL/GRA_典型草原_多伦_2006-2015"
+SITE <- "多伦"
+VegType <- "GRA"
+VegName <- "典型草原"
+
+f_met <- glue("{dir_root}/多伦_Hour_Met_2006-2015.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+## WSA / WET
+```{r}
+# %% 海北 高寒灌丛
+dir_root <- "data-raw/ALL/WSA_高寒灌丛_海北_2011-2020/"
+SITE <- "海北"
+VegType <- "WSA"
+VegName <- "高寒灌丛"
+
+f_met <- glue("{dir_root}/海北_Met_30min_2011-2020.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 海北 高寒湿地（Met/Flux 年份不一致，显式给 f_flux）
+dir_root <- "data-raw/ALL/WET_高寒湿地_海北-2004-2009/"
+SITE <- "海北"
+VegType <- "WET"
+VegName <- "高寒湿地"
+
+f_met <- glue("{dir_root}/海北湿地_Met_30min_2003_2010.csv")
+merge_hourly_FluxMet(f_met, SITE, VegType, VegName,
+  f_flux = glue("{dir_root}/海北湿地_Flux_30min_2004_2009.csv"))
+
+f_met <- glue("{dir_root}/海北湿地_Met_日_2003_2010.csv")
+merge_daily_FluxMet(f_met, SITE, VegType, VegName,
+  f_flux = glue("{dir_root}/海北湿地_Flux_日_2004_2009.csv"))
+```
+
+```{r}
+# %% 洞庭湖 南荻湿地（仅日尺度）
+dir_root <- "data-raw/ALL/WET_南荻_洞庭湖_2014-2016/"
+SITE <- "洞庭湖"
+VegType <- "WET"
+VegName <- "南荻湿地"
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 盘锦 芦苇湿地（仅日尺度）
+dir_root <- "data-raw/ALL/WET_芦苇湿地_盘锦-2018-2020/"
+SITE <- "盘锦"
+VegType <- "WET"
+VegName <- "芦苇湿地"
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+# %% 普定 退耕还林（仅日尺度）
+dir_root <- "data-raw/ALL/WSA_退耕还林_普定_2015-2019/"
+SITE <- "普定"
+VegType <- "WSA"
+VegName <- "退耕还林"
+
+f_met <- find_met_day(dir_root)
+merge_daily_FluxMet(f_met, SITE, VegType, VegName)
+```
+
+```{r}
+## 不需要处理的站点 ============================================================
+# %% 达茂 SAV（荒漠草原, 2015-2018）—— 暂不处理
+# dir_root <- "data-raw/ALL/SAV_荒漠草原_达茂_2015-2018/"
+# f_met <- find_met_day(dir_root)
+
+# %% 崇明东滩 WET（湿地, 2004-2010）—— 暂不处理
+# dir_root <- "data-raw/ALL/WET_湿地_崇明东滩_2004-2010"
+# f_met <- find_met_day(dir_root)
+```
+
+## TODO：句容、栾城(OnlyDay)、庆阳

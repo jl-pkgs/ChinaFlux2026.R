@@ -9,7 +9,7 @@ pacman::p_load(
   ggplot2, gg.layers
 )
 
-vars <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
+vars_met <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
 
 plot_variables <- function(d, fout, ..., show = FALSE) {
   vars_common <- intersect(names(d), c("site", "name", "time", "date"))
@@ -31,7 +31,7 @@ df <- check_bounds(df, scale = "hourly") # 瞬时越界值置 NA（见 R/check_b
 df[, date := as.Date(substr(time, 1, 10))]
 
 # 气象变量取日均，Prcp 取日累加
-vars_mean <- setdiff(vars, "Prcp")
+vars_mean <- setdiff(vars_met, "Prcp")
 d_day <- df[
   , c(lapply(.SD, \(x) mean(x, na.rm = TRUE)), Prcp = sum(Prcp, na.rm = TRUE)),
   by = .(site, date), .SDcols = vars_mean
@@ -85,7 +85,7 @@ bounds <- list(
 # 用 hourly 原始数据统计值域（更敏感）
 stat <- df[, {
   res <- list()
-  for (v in vars) {
+  for (v in vars_met) {
     x <- get(v)
     res[[paste0(v, "_min")]] <- round(suppressWarnings(min(x, na.rm = TRUE)), 2)
     res[[paste0(v, "_max")]] <- round(suppressWarnings(max(x, na.rm = TRUE)), 2)
@@ -97,7 +97,7 @@ stat <- df[, {
 # 标记每站每变量是否越界
 flag <- df[, {
   msg <- c()
-  for (v in vars) {
+  for (v in vars_met) {
     x <- get(v)
     pna <- mean(is.na(x)) * 100
     if (pna == 100) { msg <- c(msg, sprintf("%s:全NA", v)); next }
