@@ -8,7 +8,7 @@ outdir = "data-raw/Hourly"
 
 ```{r}
 # %% 1 临泽
-f_met <- "data-raw/ALL/ChinaFlux_CRO_临泽_2012-2015/临泽_30min_Met_2012_2015.csv"
+f_met <- "data-raw/ALL/CRO_临泽_2012-2015/临泽_30min_Met_2012_2015.csv"
 SITE <- "临泽"
 VegType <- "CRO"
 VegName <- "制种玉米"
@@ -20,7 +20,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ```{r}
 # %% 2 固城
 # l2$data[albedo > 100, albedo := albedo / 1000] %>% invisible()
-f_met <- "data-raw/ALL/ChinaFlux_CRO_固城_冬小麦夏玉米_2020-2022/固城_Met_30min_2020_2022.csv"
+f_met <- "data-raw/ALL/CRO_固城_冬小麦夏玉米_2020-2022/固城_Met_30min_2020_2022.csv"
 SITE <- "固城"
 VegType <- "CRO"
 VegName <- "冬小麦夏玉米"
@@ -29,7 +29,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 
 ```{r}
 # %% 3 禹城
-f_met <- "data-raw/ALL/ChinaFlux_CRO_禹城_2003-2010/禹城_Met_30min_2003_2010.csv"
+f_met <- "data-raw/ALL/CRO_禹城_2003-2010/禹城_Met_30min_2003_2010.csv"
 SITE <- "禹城"
 VegType <- "CRO"
 VegName <- "冬小麦夏玉米"
@@ -38,7 +38,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 
 ```{r}
 # %% 4 CRO 盘锦 稻田
-f_met <- "data-raw/ALL/ChinaFlux_CRO_盘锦_稻田-2018-2020/盘锦-稻田站_Met_30min_2018-2020.csv"
+f_met <- "data-raw/ALL/CRO_盘锦_稻田-2018-2020/盘锦-稻田站_Met_30min_2018-2020.csv"
 SITE <- "盘锦"
 VegType <- "CRO"
 VegName <- "水稻"
@@ -47,7 +47,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 
 ```{r}
 # %% 5 CRO 锦州 春玉米
-f_met <- "data-raw/ALL/ChinaFlux_CRO_锦州_2005-2014/锦州_Met_30min_2005_2014.csv"
+f_met <- "data-raw/ALL/CRO_锦州_2005-2014/锦州_Met_30min_2005_2014.csv"
 # code(dirname(f_met))
 SITE <- "锦州"
 VegType <- "CRO"
@@ -57,7 +57,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 
 ```{r}
 # %% CRO 长岭 水稻（东北）
-f_met <- "data-raw/ALL/ChinaFlux_CRO_长岭_稻田_2020/长岭_水稻_Met_30min_2018-2020.csv"
+f_met <- "data-raw/ALL/CRO_长岭_稻田_2020/长岭_水稻_Met_30min_2018-2020.csv"
 SITE <- "长岭"
 VegType <- "CRO"
 VegName <- "水稻"
@@ -67,7 +67,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ## EBF （5个站点）
 
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_EBF_哀牢山_EBF-2009-2013/"
+dir_root = "data-raw/ALL/EBF_哀牢山_EBF-2009-2013/"
 f_met = dir2(dir_root, "_Met_30min")
 
 SITE = "哀牢山"
@@ -77,7 +77,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_EBF_海南儋州-橡胶林_2010-2018/"
+dir_root = "data-raw/ALL/EBF_海南儋州-橡胶林_2010-2018/"
 # code(dir_root)
 f_met = "{dir_root}/儋州橡胶林_Met_数据（30分钟）_2010_2018.csv" %>% glue()
 
@@ -88,7 +88,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_EBF_西双版纳-橡胶林_2010-2014/"
+dir_root = "data-raw/ALL/EBF_西双版纳-橡胶林_2010-2014/"
 f_met = dir2(dir_root, "_Met_30min")
 
 SITE = "西双版纳"
@@ -98,7 +98,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_EBF_西双版纳_热带雨林_2003-2015/"
+dir_root = "data-raw/ALL/EBF_西双版纳_热带雨林_2003-2015/"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "西双版纳"
 VegType = "EBF"
@@ -120,7 +120,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ## DBF
 
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_DBF_帽儿山_DBF-2016-2018/"
+dir_root = "data-raw/ALL/DBF_帽儿山_DBF-2016-2018/"
 dir(dir_root, "30min")[2]
 # code(dir_root)
 
@@ -134,7 +134,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ## ENF
 
 ```{r}
-f_met = "data-raw/ALL/ChinaFlux_ENF_千烟洲_人工针叶林_2003-2010/千烟洲_Met_30min_2003_2015.csv"
+f_met = "data-raw/ALL/ENF_千烟洲_人工针叶林_2003-2010/千烟洲_Met_30min_2003_2015.csv"
 
 SITE = "千烟洲"
 VegType = "ENF"
@@ -179,7 +179,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, f_flux = f_flux)
 
 ## MF
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_MF_鼎湖山_针阔叶混交林_2003-2010/"
+dir_root = "data-raw/ALL/MF_鼎湖山_针阔叶混交林_2003-2010/"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "鼎湖山"
 VegType = "MF"
@@ -189,7 +189,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 
 ```{r}
 # 温带原始针阔叶混交林
-dir_root = "data-raw/ALL/ChinaFlux_MF_长白山_阔叶红松林_2003-2010/"
+dir_root = "data-raw/ALL/MF_长白山_阔叶红松林_2003-2010/"
 # code(dir_root)
 
 f_met = dir2(dir_root, "_Met_30min")
@@ -220,7 +220,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 
 ## GRA
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_GRA_当雄_高寒草甸_2004-2010/"
+dir_root = "data-raw/ALL/GRA_当雄_高寒草甸_2004-2010/"
 f_met = dir2(dir_root, "_Met_30min")
 SITE = "当雄"
 VegType = "GRA"
@@ -229,7 +229,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_GRA_海北_2015-2020_高寒草甸/"
+dir_root = "data-raw/ALL/GRA_海北_高寒草甸_2015-2020/"
 f_met = dir2(dir_root, "_Met_30min")
 
 SITE = "海北"
@@ -247,7 +247,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
 ```{r}
-f_met = "data-raw/ALL/ChinaFlux_GRA_内蒙-锡林浩特-典型草原_2003-2010年/内蒙古_Met_30min_2003_2010.csv"
+f_met = "data-raw/ALL/GRA_内蒙-锡林浩特-典型草原_2003-2010年/内蒙古_Met_30min_2003_2010.csv"
 SITE = "锡林浩特"
 VegType = "GRA"
 VegName = "典型草原"
@@ -255,7 +255,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
 ```{r}
-f_met = "data-raw/ALL/ChinaFlux_GRA_三江源-垂穗披碱草_2012-2016/三江源垂穗披-碱草人工草地_Met_30min_2012_2016.csv"
+f_met = "data-raw/ALL/GRA_三江源-垂穗披碱草_2012-2016/三江源垂穗披-碱草人工草地_Met_30min_2012_2016.csv"
 SITE = "三江源"
 VegType = "GRA"
 VegName = "人工垂穗披碱草"
@@ -263,7 +263,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ```
 
 ```{r}
-dir_root = "data-raw/ALL/ChinaFlux_GRA_若尔盖-高寒草甸_2015-2020"
+dir_root = "data-raw/ALL/GRA_若尔盖-高寒草甸_2015-2020"
 f_met = dir2(dir_root, "_Met_30min.*.csv")
 SITE = "若尔盖"
 VegType = "GRA"
@@ -282,7 +282,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName)
 ## 其他
 > WSA
 ```{r}
-f_met = "data-raw/ALL/ChinaFlux_WSA_海北_高寒灌丛_2011-2020/海北_Met_30min_2011-2020.csv"
+f_met = "data-raw/ALL/WSA_海北_高寒灌丛_2011-2020/海北_Met_30min_2011-2020.csv"
 SITE = "海北"
 VegType = "WSA"
 VegName = "高寒灌丛"
@@ -300,7 +300,7 @@ merge_hourly_FluxMet(f_met, SITE, VegType, VegName, f_flux = f_flux)
 ```
 
 ```{r}
-f_met = "data-raw/ALL/ChinaFlux_GRA_元江-干热河谷_稀树草原_2013-2015/元江站_Met_30min_2013_2015.csv"
+f_met = "data-raw/ALL/GRA_元江-干热河谷_稀树草原_2013-2015/元江站_Met_30min_2013_2015.csv"
 SITE = "元江"
 VegType = "GRA"
 VegName = "稀树草原"
