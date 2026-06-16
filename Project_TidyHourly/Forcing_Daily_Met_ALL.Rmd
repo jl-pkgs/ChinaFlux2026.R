@@ -154,7 +154,7 @@ sites_bad <- c(
 ) # ! 只跑bads
 
 res <- foreach(d = lst_data, SITE = names(lst_data), i = icount()) %do% {
-  if (SITE %!in% sites_bad) return()
+  # if (SITE %!in% sites_bad) return()
   runningId(i)
 
   d2 <- d %>%
