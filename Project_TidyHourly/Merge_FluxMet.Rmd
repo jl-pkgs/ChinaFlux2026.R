@@ -1,9 +1,7 @@
 ```{r}
-# %%
 pacman::p_load(Ipaper, data.table, dplyr, lubridate, stringr, zeallot)
 devtools::load_all(".")
 
-# 每个站点一个 cell：先半小时(merge_hourly_FluxMet)，再日尺度(merge_daily_FluxMet)。
 # - 半小时 f_met：能用 `dir2(dir_root, "_Met_30min")` 自动定位的就自动定位，
 #   命名不规范的(如 _Hour_Met_ / _30min_Met / 中文括号)用 glue 显式给出。
 # - 日尺度 f_met：优先 `find_met_day(dir_root)`，多日文件并存的(如海北湿地)显式给出。
@@ -244,6 +242,7 @@ merge_daily_FluxMet(f_met, SITE, VegType, VegName)
 # %% 燕山
 dir_root <- "data-raw/ALL/燕山-山地丘陵区_2020-2021"
 SITE <- "燕山"
+
 f_met_h <- glue("{dir_root}/燕山灌丛_Met_30min_2020_2021.csv") # 共用一个met
 f_met_d <- glue("{dir_root}/燕山灌丛_Met_日_2020_2021.csv")
 

@@ -12,7 +12,7 @@ TEMP
 backup
 
 dev
-*.typ
+# *.typ
 .agents
 
 ## DATA
@@ -24,3 +24,5 @@ dev
 # data/*.csv
 
 *debug*
+*MetCheck*
+*.pdf

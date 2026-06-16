@@ -127,7 +127,7 @@ export_Soil <- function(lst_data) {
     site <- names(lst_data)[i]
     print(site)
     d <- lst_data[[i]] %>% add_time() %>%
-      check_bounds_SM() %>%
+      check_zero() %>%
       select_any(time, any_of(vars_need), starts_with(c("SM", "TS", "G_"))) %>%
       select(-any_of(starts_with(c("TS_0_", "TS_TCAV")))) %>%
       mutate(site = site, .before = 1)

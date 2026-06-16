@@ -24,39 +24,21 @@ pacman::p_load(
 )
 devtools::load_all(".")
 
-str_site <- function(f) {
-  str_extract(basename(f), ".*(?=_30min)")
-}
-
-tidy_unit <- function(d) {
-  data.table(
-    name = names(d), name_new = NA_character_,
-    unit = unlist(d), unit_new = NA_character_, comment = ""
-  )
-}
-
-plot_variables <- function(d, fout, ..., show = FALSE) {
-  vars_common <- intersect(names(d), c("site", "name", "time", "date"))
-  dat <- melt(d, vars_common)
-
-  p <- ggplot(dat, aes(date, value)) +
-    geom_line() +
-    facet_wrap(~variable, scales = "free") +
-    theme_bw()
-  write_fig(p, fout, 14, 7, show = show)
-}
+vars_met <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
 
 fs <- dir2("data-raw/Hourly/", "*.csv")
 sites <- str_site(fs)
 names(fs) <- sites
 
-# 已知问题站点，从 hourly 强迫中剔除（可按需增删）
 sites_bad <- c(
   "EBF_亚热带常绿阔叶林_哀牢山", # 小时数据无降水 Prcp 列
   "DBF_温带落叶阔叶林_帽儿山",   # 无 LE 观测，弃用 (README.md Notes)
   "MF_乔灌混交林_燕山"          # 只有半年数据，剔除 (README.md Notes)
 )
 inds <- seq_along(sites) %>% setdiff(match(sites_bad, sites) %>% na.omit())
+
+lst <- map(fs, \(f) read_ufile(f, nrows = 10))
+lst_unit <- map(lst, "unit")
 ```
 
 > 无hourly观测的站点
@@ -65,18 +47,22 @@ inds <- seq_along(sites) %>% setdiff(match(sites_bad, sites) %>% na.omit())
 
 # PART1 变量单位概览
 
-```{r}
-lst <- map(fs, \(f) read_ufile(f, nrows = 10))
-lst_unit <- map(lst, "unit")
+```{r, eval = FALSE}
+unit2df <- function(d) {
+  data.table(
+    name = names(d), name_new = NA_character_,
+    unit = unlist(d), unit_new = NA_character_, comment = ""
+  )
+}
 write_json(lst_unit[inds], "data/Unit/ChinaFlux_Variable_Info_ALL_Hourly.json", pretty = TRUE)
+
+res <- map(lst_unit[inds], unit2df)
+r <- melt_list(res, "site")
+fwrite(r, "data/Unit/ChinaFlux_Variable_Info_ALL_Hourly.csv", bom = TRUE) ## 后续没有采用该方案
 ```
 
 > 检查各站变量是否齐全
 ```{r, eval = FALSE}
-res <- map(lst_unit[inds], tidy_unit)
-r <- melt_list(res, "site")
-fwrite(r, "data/Unit/ChinaFlux_Variable_Info_ALL_Hourly.csv", bom = TRUE)
-
 # 6 个核心气象变量的覆盖情况
 vars_met <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
 res <- lst_unit[inds] %>% map(\(d) select(d, any_of(vars_met)))
@@ -96,12 +82,8 @@ lst_data <- map(lst2, "data")
 write_json(lst_unit, "data/Unit/ChinaFlux_Variable_Info_ALL_Hourly.json", pretty = TRUE)
 ```
 
-## Met hourly
-
 ```{r}
-vars_met <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
-
-res <- map(1:length(lst_data), function(i) {
+res <- map(seq_along(lst_data), function(i) {
   site <- names(lst_data)[i]
   fprintf("[%d] %s\n", i, site)
 
@@ -129,5 +111,6 @@ res <- map(1:length(lst_data), function(i) {
 })
 
 df <- rbindlist(res)
+df[, .N, site]
 fwrite(df, "data-raw/Forcing_Hourly_Met_sp31_v20260614.csv", bom = TRUE)
 ```

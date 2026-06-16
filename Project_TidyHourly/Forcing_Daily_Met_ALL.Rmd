@@ -7,42 +7,6 @@ pacman::p_load(
 )
 devtools::load_all(".")
 
-str_site <- \(f) str_extract(basename(f), ".*(?=_30min|_Day)")
-
-check_Flux <- function(d) {
-  if ("ET" %!in% names(d)) {
-    if ("LE" %in% names(d)) {
-      d %<>% mutate(ET = W2mm(LE, Ta), .after = LE)
-    }
-  }
-
-  if ("GPP" %in% names(d)) {
-    .fix <- \(x) {
-      x[x > 100] <- NA_real_
-      x
-    }
-    d %<>% mutate(GPP = .fix(GPP))
-  }
-  d
-}
-
-tidy_unit <- function(d) {
-  data.table(
-    name = names(d), name_new = NA_character_,
-    unit = unlist(d), unit_new = NA_character_, comment = ""
-  )
-}
-
-plot_variables <- function(d, fout, ..., show = FALSE) {
-  vars_common <- intersect(names(d), c("site", "name", "time", "date"))
-  dat <- melt(d, vars_common)
-
-  p <- ggplot(dat, aes(date, value)) +
-    geom_line() +
-    facet_wrap(~variable, scales = "free") +
-    theme_bw()
-  write_fig(p, fout, 14, 7, show = show)
-}
 
 fs <- dir2("data-raw/Daily/", "*.csv")
 sites <- str_site(fs)
@@ -123,7 +87,7 @@ vars <- c(
 data <- map(lst_data, \(d) {
   d %>%
     add_date() %>%
-    check_Flux() %>%
+    add_ET() %>%
     check_bounds() %>%
     check_zero() %>% # RH/SM == 0 → NA（传感器故障/缺测）
     pick_layer1("SM", to = "SM_1") %>%
@@ -159,7 +123,7 @@ res <- foreach(d = lst_data, SITE = names(lst_data), i = icount()) %do% {
 
   d2 <- d %>%
     add_date() %>%
-    check_Flux() %>%
+    add_ET() %>%
     check_bounds() %>%
     check_zero() %>% # RH/SM == 0 → NA（传感器故障/缺测）
     pick_layer1("SM", to = "SM_L1") %>%

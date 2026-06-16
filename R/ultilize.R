@@ -25,9 +25,8 @@ rm_spike <- function(x, halfwin = 3, sd.times = 3) {
   x
 }
 
-extract_site <- function(fs) {
-  str_extract(basename(fs), "(?<=_).*?(?=_Day)")
-}
+str_site <- \(f) str_extract(basename(f), ".*(?=_30min|_Day)")
+# extract_site <- \(fs) str_extract(basename(fs), "(?<=_).*?(?=_Day)")
 
 fix_NEE <- function(d) {
   if ("NEE" %in% names(d)) {
@@ -103,4 +102,19 @@ coalesce_canopy <- function(d) {
     }
   }
   d
+}
+
+# 检查时间序列
+plot_variables <- function(d, fout, ..., show = FALSE) {
+  vars_common <- intersect(names(d), c("site", "name", "time", "date"))
+  dat <- melt(d, vars_common)
+
+  xvar <- if ("date" %in% names(d)) "date" else "time" # 日尺度用 date，小时用 time
+  
+  p <- ggplot(dat, aes(.data[[xvar]], value)) +
+    geom_line() +
+    facet_wrap(~variable, scales = "free") +
+    theme_bw() + 
+    labs(x = NULL)
+  write_fig(p, fout, 14, 7, show = show)
 }

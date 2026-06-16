@@ -59,6 +59,17 @@ add_date <- function(d) {
   }
 }
 
+# daily scale
+add_ET <- function(d) {
+  if ("ET" %!in% names(d)) {
+    if ("LE" %in% names(d)) {
+      d %<>% mutate(ET = W2mm(LE, Ta), .after = LE)
+    }
+  }
+  d
+}
+
+
 filter_date <- function(d, time_beg, time_end) {
   d[time >= time_beg & time <= time_end]
 }
