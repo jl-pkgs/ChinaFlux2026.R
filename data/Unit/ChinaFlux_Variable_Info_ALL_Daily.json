@@ -820,7 +820,7 @@
       "TS_30cm": "°C",
       "TS_50cm": "°C",
       "Pa": "kPa",
-      "WS": "m s-1",
+      "WD": "Deg",
       "WS_canopy": "m s-1"
     }
   ],

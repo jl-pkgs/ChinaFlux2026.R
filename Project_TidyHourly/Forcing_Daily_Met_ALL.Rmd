@@ -58,7 +58,6 @@ names(fs) <- sites
 > 加载所有站点数据
 ```{r}
 lst <- map(fs, \(f) read_ufile(f, nrows = Inf))
-
 lst2 <- map(lst, unify_unit_daily)
 lst_unit <- map(lst2, "unit")
 lst_data <- map(lst2, "data")
@@ -97,11 +96,11 @@ data <- map(lst_data, \(d) {
 })
 sapply(data, names) %>% unlist() %>% table()
 
-dat[site == "EBF_热带雨林_西双版纳" & Prcp >= 200, Prcp := NA_real_]
-
 # 融入LAI数据
 dat <- rbindlist(data, idcol = "site", fill = TRUE) %>%
   merge(df_LAI, by = c("site", "date"), all.x = TRUE)
+dat[site == "EBF_热带雨林_西双版纳" & Prcp >= 200, Prcp := NA_real_]
+
 fwrite(dat, "data-raw/Forcing_Daily_Flux_sp40_v20260615.csv", bom = TRUE)
 ```
 

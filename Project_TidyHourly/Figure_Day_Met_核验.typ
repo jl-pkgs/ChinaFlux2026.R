@@ -1,15 +1,15 @@
 #import "@preview/modern-cug-report:0.1.3": *
 #show: doc => template(doc, footer: "ChinaFlux 2026", header: "")
 
-// Hourly 强迫数据（Forcing_Hourly_Met_ALL.Rmd）聚合为日尺度后的值域核验
-// 由 Project_TidyHourly/check_hourly.R 产出 PDF
+// Daily 强迫数据（Forcing_Daily_Met_ALL.Rmd）聚合为日尺度后的值域核验
+// 由 Project_TidyHourly/check_daily.R 产出 PDF
 
 #let Figure1(site) = {
   let file = "MetCheck_Daily/" + site + "_Daily_Met.pdf"
   figure(
     image(file, width: 100%),
     caption: [
-      *#site* Hourly 气象强迫 → 日尺度时间序列。
+      *#site* Daily 气象强迫 → 日尺度时间序列。
     ],
   )
 }
@@ -48,7 +48,7 @@
   "WSA_高寒灌丛_海北",
 )
 
-= 1 Hourly 气象强迫（日尺度核验）
+= 1 Daily 气象强迫（日尺度核验）
 
 #for site in sites {
   Figure1(site)
