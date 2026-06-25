@@ -1,6 +1,9 @@
 #import "@preview/modern-cug-report:0.1.3": *
 #show: doc => template(doc, footer: "ChinaFlux 2026", header: "")
 
+#set text(font: ("Times New Roman", "KaiTi"))
+// #set text(font: ("Times New Roman", "SimSun"))
+
 #let version = "v20260615"
 
 #let Figure1(site) = {

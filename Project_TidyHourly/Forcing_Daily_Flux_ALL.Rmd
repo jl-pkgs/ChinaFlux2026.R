@@ -101,12 +101,12 @@ dat <- rbindlist(data, idcol = "site", fill = TRUE) %>%
   merge(df_LAI, by = c("site", "date"), all.x = TRUE)
 dat[site == "EBF_热带雨林_西双版纳" & Prcp >= 200, Prcp := NA_real_]
 
-fwrite(dat, "data-raw/Forcing_Daily_Flux_sp40_v20260615.csv", bom = TRUE)
+fwrite(dat, "data/BEPS/Forcing_Daily_Flux_sp40_v20260615.csv", bom = TRUE)
 ```
 
 版本2：逐站点的结果保存
 ```{r}
-outdir <- "data-raw/Daily_FluxALL"
+outdir <- "data/BEPS/Daily_FluxALL"
 sites_bad <- c(
   # "CRO_冬小麦夏玉米_固城",
   # "CRO_春玉米_锦州",
@@ -129,6 +129,9 @@ res <- foreach(d = lst_data, SITE = names(lst_data), i = icount()) %do% {
     avg_layer("G") %>% # 多块土壤热通量板取行中位数 → 单列 G
     select(date, any_of(vars), any_of("SM_L1"), any_of("G"), starts_with(c("TS_", "SM_"))) %>%
     select(-any_of(starts_with(c("TS_0_", "TS_TCAV", "TS_105T"))))
+
+  d_LAI <- df_LAI[site == SITE]
+  d2 <- merge(d2, d_LAI, by = "date", all.x = TRUE)
 
   fout <- glue("{outdir}/{SITE}_Daily_FluxALL_v20260615.csv")
   fwrite(d2, fout, bom = TRUE)
