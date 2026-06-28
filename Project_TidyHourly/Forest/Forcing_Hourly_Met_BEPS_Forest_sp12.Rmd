@@ -97,12 +97,16 @@ res <- map(seq_along(lst_data), function(i) {
     select_any(time, any_of(vars_need)) %>%
     mutate(site = site, .before = 1)
   # 30min to hourly
+  # Prcp 是累计量，用 sum（不能用 mean*N，详见 data-raw/Notes.md）
+  # 必须用 .SDcols 把 Prcp 排除出 .SD，否则 lapply(.SD, mean) 会另生成同名 Prcp(均值)
+  # 列顶替掉 Prcp(sum)，使 sum 失效（同名重复列陷阱）。
+  vars_mean <- setdiff(names(d), c("site", "time", "Prcp"))
   d_hour <- d[
-    , c(lapply(.SD, \(x) mean(x, na.rm = TRUE)), .N),
-    .(site, time = floor_date(time, "hour"))
-  ] %>%
-    mutate(Prcp = Prcp * N) %>%
-    select(-N) # Prcp是累积
+    , c(lapply(.SD, \(x) mean(x, na.rm = TRUE)),
+       .(Prcp = sum(Prcp, na.rm = TRUE))),
+    by = .(site, time = floor_date(time, "hour")),
+    .SDcols = vars_mean
+  ]
 
   # d_hour[, .N, .(site, time)][N > 1]
   d_hour[is.na(Prcp), Prcp := 0.0]

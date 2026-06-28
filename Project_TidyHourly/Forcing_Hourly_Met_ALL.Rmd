@@ -95,12 +95,15 @@ res <- map(seq_along(lst_data), function(i) {
       mutate(site = site, .before = 1)
 
     # 30min → hourly
+    # Prcp 是累计量，用 sum；其他瞬时量用 mean。
+    # 旧实现 `mean(na.rm=TRUE) * N` 在组内有 NA 时会多算 N/N_present 倍（盘锦 NA=50% → 2x）
+    vars_mean <- setdiff(names(d), c("site", "time", "Prcp"))
     d_hour <- d[
-      , c(lapply(.SD, \(x) mean(x, na.rm = TRUE)), .N),
-      .(site, time = floor_date(time, "hour"))
-    ] %>%
-      mutate(Prcp = Prcp * N) %>%
-      select(-N) # Prcp 是累积量
+      , c(lapply(.SD, \(x) mean(x, na.rm = TRUE)),
+         .(Prcp = sum(Prcp, na.rm = TRUE))),
+      by = .(site, time = floor_date(time, "hour")),
+      .SDcols = vars_mean
+    ]
 
     d_hour[is.na(Prcp), Prcp := 0.0]
     d_hour <- d_hour %>% mutate(across(-c(site, time, Prcp, Rln_in), \(x) na_interp(time, x)))

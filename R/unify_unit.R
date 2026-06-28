@@ -117,6 +117,19 @@ fix_temp_K <- function(l) {
   .fix(l, \(u) u == "K", K2degC, "°C")
 }
 
+# 负降水置 NA：降水物理上 ≥ 0，任何负值（含 -9999/-99999 等缺测哨兵）均非真值。
+# 不枚举具体哨兵、不设站点专用上限——这是对所有站点都成立的通用规则。
+# 个别站点的极端污染（如固城 2021 误填值）在各自目录单独清洗，不进公共管道。
+fix_Prcp_neg <- function(l) {
+  for (v in grep("^Prcp", names(l$data), value = TRUE)) {
+    x <- l$data[[v]]
+    if (!is.numeric(x)) next
+    x[x < 0] <- NA_real_
+    l$data[[v]] <- x
+  }
+  l
+}
+
 fix_unit_notation <- function(l) {
   replacement <- list(
     "kPa" = "kpa",
@@ -255,5 +268,6 @@ unify_unit_hourly <- function(l) {
     fix_radiation() |>
     fix_temp_K() |>
     fix_SM_pct() |>
-    fix_Pa()
+    fix_Pa() |>
+    fix_Prcp_neg()
 }
