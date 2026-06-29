@@ -115,5 +115,5 @@ res <- map(seq_along(lst_data), function(i) {
 
 df <- rbindlist(res)
 df[, .N, site]
-fwrite(df, "data-raw/Forcing_Hourly_Met_sp31_v20260614.csv", bom = TRUE)
+fwrite(df, "data/BEPS/Forcing_Hourly_Met_sp31_v20260614.csv", bom = TRUE)
 ```
