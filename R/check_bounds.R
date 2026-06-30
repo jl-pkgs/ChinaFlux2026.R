@@ -21,7 +21,6 @@ VARS_BOUNDS_DAILY <- list(
   TS        = c(-40,  60),   # °C  土壤温度（日均）
   RH        = c(  0, 100),   # %   相对湿度
   WS        = c(  0,  10),   # m/s 风速（日均）
-  WS_canopy = c(  0,  10),   # m/s 风速（日均）
   WD        = c(  0, 360),   # Deg 风向
   Prcp      = c(  0, 300),   # mm  日降水
   Rs        = c(  0, 450),   # W/m2 入射短波（日均）
@@ -104,6 +103,8 @@ check_bounds <- function(d, scale = c("daily", "hourly"), bounds = NULL) {
     key <- .bound_key(col, keys)
     if (is.na(key)) next
     rng <- bounds[[key]]
+    # Rs 物理上非负：夜间负值多为传感器噪声，clip 到 0 而非置 NA
+    if (key == "Rs") x[x < 0] <- 0
     # 边界为有效值（含 0 降水、夜间 0 辐射、静风、RH=100 饱和），仅剔除严格越界
     x[x < rng[1] | x > rng[2]] <- NA_real_
     d[[col]] <- x

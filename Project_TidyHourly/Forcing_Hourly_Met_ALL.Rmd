@@ -26,7 +26,7 @@ devtools::load_all(".")
 
 vars_met <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
 
-fs <- dir2("data-raw/Hourly/", "*.csv")
+fs <- dir2("data-raw/Hourly/", "*.csv") %>% sort()
 sites <- str_site(fs)
 names(fs) <- sites
 
@@ -87,31 +87,53 @@ res <- map(seq_along(lst_data), function(i) {
   site <- names(lst_data)[i]
   fprintf("[%d] %s\n", i, site)
 
-  tryCatch({
-    d <- lst_data[[i]] %>%
-      coalesce_canopy() %>% # 冠层缺测 → 回退基础 Ta/RH/WS
-      add_time() %>%
-      select_any(time, any_of(vars_met)) %>%
-      mutate(site = site, .before = 1)
+  tryCatch(
+    {
+      d <- lst_data[[i]] %>%
+        coalesce_canopy() %>% # 冠层缺测 → 回退基础 Ta/RH/WS
+        add_time() %>%
+        select_any(time, any_of(vars_met)) %>%
+        mutate(site = site, .before = 1)
 
-    # 30min → hourly
-    # Prcp 是累计量，用 sum；其他瞬时量用 mean。
-    # 旧实现 `mean(na.rm=TRUE) * N` 在组内有 NA 时会多算 N/N_present 倍（盘锦 NA=50% → 2x）
-    vars_mean <- setdiff(names(d), c("site", "time", "Prcp"))
-    d_hour <- d[, c(
-      lapply(.SD, \(x) mean(x, na.rm = TRUE)),
-      .(Prcp = sum(Prcp, na.rm = TRUE))
-    ), by = .(site, time = floor_date(time, "hour")), .SDcols = vars_mean]
-
-    d_hour[is.na(Prcp), Prcp := 0.0]
-    d_hour <- d_hour %>% mutate(across(-c(site, time, Prcp, Rln_in), \(x) na_interp(time, x)))
-    arrange(d_hour, time)
-  }, error = function(e) {
-    message(sprintf("[e, %d] %s", i, e$message))
-  })
+      # 30min → hourly
+      # Prcp 是累计量，用 sum；其他瞬时量用 mean。
+      # 旧实现 `mean(na.rm=TRUE) * N` 在组内有 NA 时会多算 N/N_present 倍（盘锦 NA=50% → 2x）
+      vars_mean <- setdiff(names(d), c("site", "time", "Prcp"))
+      d_hour <- d[, c(lapply(.SD, nanmean), .(Prcp = nansum(Prcp))),
+        by = .(site, time = floor_date(time, "hour")), .SDcols = vars_mean
+      ]
+      arrange(d_hour, time)
+    },
+    error = function(e) {
+      message(sprintf("[e, %d] %s", i, e$message))
+    }
+  )
 })
 
 df <- rbindlist(res)
-df[, .N, site]
-fwrite(df, "data/BEPS/Forcing_Hourly_Met_sp31_v20260629.csv", bom = TRUE)
+# df[, .N, site]
+# fwrite(df, f, bom = TRUE)
+
+fout <- "data/BEPS/Forcing_Hourly_Met_sp31_v20260629.csv"
+
+rename_forward <- function(d) {
+  vars_old <- c("Ta_canopy", "RH_canopy", "WS_canopy", "Rs", "Rln_in", "Prcp")
+  vars_new <- c("Ta", "RH", "WS", "Rs", "Rln_in", "Prcp")
+
+  rename_with(d, \(nms) str_replace_all(nms, setNames(vars_new, vars_old)))
+}
+Met <- rename_forward(df) %>% check_bounds(scale = "hourly")
+
+fwrite(Met, fout, bom = TRUE)
+```
+
+```{r}
+# Met[Rs > 1370, .N, site] # 风速不应为负
+# Met[site == "SAV_荒漠草原_达茂" & WS_canopy > 100, ]
+```
+
+```{r}
+# rename_backward <- function(d) {
+#   rename_with(d, \(nms) str_replace_all(nms, setNames(vars_old, vars_new)))
+# }
 ```

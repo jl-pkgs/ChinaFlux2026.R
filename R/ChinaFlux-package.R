@@ -77,5 +77,13 @@ filter_date <- function(d, time_beg, time_end) {
 
 #' @importFrom stringr str_replace_all
 rename_vars <- \(d, replacement) {
-  rename_with(d, \(x) str_replace_all(x, replacement))
+  rename_with(d, \(nms) str_replace_all(nms, replacement))
+}
+
+nansum <- function(x) {
+  if (all(is.na(x))) NA_real_ else sum(x, na.rm = TRUE)
+}
+
+nanmean <- function(x) {
+  if (all(is.na(x))) NA_real_ else mean(x, na.rm = TRUE)
 }
