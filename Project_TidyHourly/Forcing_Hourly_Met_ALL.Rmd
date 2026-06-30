@@ -32,8 +32,8 @@ names(fs) <- sites
 
 sites_bad <- c(
   "EBF_亚热带常绿阔叶林_哀牢山", # 小时数据无降水 Prcp 列
-  "DBF_温带落叶阔叶林_帽儿山",   # 无 LE 观测，弃用 (README.md Notes)
-  "MF_乔灌混交林_燕山"          # 只有半年数据，剔除 (README.md Notes)
+  "DBF_温带落叶阔叶林_帽儿山", # 无 LE 观测，弃用 (README.md Notes)
+  "MF_乔灌混交林_燕山" # 只有半年数据，剔除 (README.md Notes)
 )
 inds <- seq_along(sites) %>% setdiff(match(sites_bad, sites) %>% na.omit())
 
@@ -98,12 +98,10 @@ res <- map(seq_along(lst_data), function(i) {
     # Prcp 是累计量，用 sum；其他瞬时量用 mean。
     # 旧实现 `mean(na.rm=TRUE) * N` 在组内有 NA 时会多算 N/N_present 倍（盘锦 NA=50% → 2x）
     vars_mean <- setdiff(names(d), c("site", "time", "Prcp"))
-    d_hour <- d[
-      , c(lapply(.SD, \(x) mean(x, na.rm = TRUE)),
-         .(Prcp = sum(Prcp, na.rm = TRUE))),
-      by = .(site, time = floor_date(time, "hour")),
-      .SDcols = vars_mean
-    ]
+    d_hour <- d[, c(
+      lapply(.SD, \(x) mean(x, na.rm = TRUE)),
+      .(Prcp = sum(Prcp, na.rm = TRUE))
+    ), by = .(site, time = floor_date(time, "hour")), .SDcols = vars_mean]
 
     d_hour[is.na(Prcp), Prcp := 0.0]
     d_hour <- d_hour %>% mutate(across(-c(site, time, Prcp, Rln_in), \(x) na_interp(time, x)))
@@ -115,5 +113,5 @@ res <- map(seq_along(lst_data), function(i) {
 
 df <- rbindlist(res)
 df[, .N, site]
-fwrite(df, "data/BEPS/Forcing_Hourly_Met_sp31_v20260614.csv", bom = TRUE)
+fwrite(df, "data/BEPS/Forcing_Hourly_Met_sp31_v20260629.csv", bom = TRUE)
 ```
